@@ -1,0 +1,34 @@
+---
+- name: Check current binary packaged go version
+  shell: pkg_info -Q go | grep "^go-[0-9]" | cut -d- -f 2 | awk '{print $1}'
+  register: packaged_go_version
+  ignore_errors: true
+  changed_when: false
+
+- name: Find most current go version available from source
+  shell: ftp -v -o - https://golang.org/src/ | sed -E -n 's/.*goVersion = "go([0-9.]+)";.*/\1/p'
+  register: current_go_version
+  ignore_errors: true
+  changed_when: false
+
+- name: Check installed go version
+  shell: "command -v go >/dev/null && (go version | sed -E -n 's/^go version go([^ ]+) .*/\\1/p') || echo 1.00"
+  register: installed_go_version
+  ignore_errors: true
+  changed_when: false
+
+- name: Install go binary package
+  openbsd_pkg: 
+    name: "{{ item }}"
+    state: present
+  register: install_go
+  with_items:
+    - go
+  when: 
+    - installed_go_version.stdout is version(required_go_version, '<')
+    - packaged_go_version.stdout is version(required_go_version, '>=')
+
+- import_tasks: compile-go.yml
+  when: 
+    - installed_go_version.stdout is version(required_go_version, '<')
+    - packaged_go_version.stdout is version(required_go_version, '<')

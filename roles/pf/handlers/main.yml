@@ -1,0 +1,4 @@
+- name: restart pf
+  command: pfctl -f /etc/pf.conf
+  register: pf_restart
+  failed_when: "pf_restart.rc == 1"

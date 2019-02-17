@@ -1,0 +1,57 @@
+---
+- name: Install required packages
+  openbsd_pkg:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - x11vnc
+
+- name: Comment out original Xserver
+  replace:
+    dest: /etc/X11/xenodm/Xservers
+    regexp: '^:0 local /usr/X11RR6/bin/X '
+    replace: '#:0 local /usr/X11RR6/bin/X :0 vt05'
+
+- name: Add Xvfb to Xserver
+  lineinfile:
+    path: /etc/X11/xenodm/Xservers
+    state: present
+    regexp: '^:0 local /usr/X11R6/bin/Xvfb'
+    line: ':0 local /usr/X11R6/bin/Xvfb -screen 0 1024x768x24'
+
+- name: Enable xenodm
+  service:
+    name: xenodm
+    state: started
+    enabled: yes
+
+- name: Create vncserver service
+  template:
+    src: vncserver
+    dest: /etc/rc.d
+    owner: root
+    group: wheel
+    mode: 0755
+    backup: no
+
+- name: Ensure vncserver is enabled and started
+  service:
+    name: vncserver
+    state: started
+    enabled: yes
+
+- name: Deploy admin's xsession
+  template:
+    src: xsession
+    dest: /home/admin/.xsession
+    owner: admin
+    mode: 0755
+    backup: yes
+
+- name: Deploy admin's cwmrc
+  template:
+    src: cwmrc
+    dest: /home/admin/.cwmrc
+    owner: admin
+    mode: 0755
+    backup: yes

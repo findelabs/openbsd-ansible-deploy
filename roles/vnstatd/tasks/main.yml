@@ -1,0 +1,19 @@
+---
+- name: Install base packages
+  openbsd_pkg:
+    name: "{{ item }}"
+    state: present
+  with_items:
+       - vnstat
+
+- name: Deploy vnstat.conf 
+  template:
+    src: vnstat.conf
+    dest: /etc/vnstat.conf
+    owner: root 
+    group: wheel 
+    mode: 0644
+    backup: yes
+  notify:
+    - restart vnstatd
+

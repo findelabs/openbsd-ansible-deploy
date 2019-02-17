@@ -1,0 +1,4 @@
+- name: restart ifstated
+  service:
+    name: ifstated
+    state: restarted

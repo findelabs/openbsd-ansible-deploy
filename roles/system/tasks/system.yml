@@ -1,0 +1,73 @@
+---
+- name: Deploy installurl 
+  template:
+    src: installurl
+    dest: /etc/
+    owner: root 
+    group: operator 
+    mode: 0644
+    backup: yes
+
+- name: Install base packages
+  openbsd_pkg:
+    name: "{{ item }}"
+    state: present
+  with_items:
+       - bash
+       - colorls
+       - git
+       - htop
+       - iftop
+       - mtr-0.92p1v0
+       - rsync-3.1.3
+       - vim--no_x11
+       - wget
+       - libqrencode
+
+- name: Set users shell to bash 
+  user: 
+    name: "{{ item }}"
+    shell: /usr/local/bin/bash
+  with_items:
+    - admin
+    - root
+
+- name: Deploy /etc/motd 
+  template:
+    src: motd
+    dest: /etc/
+    owner: root 
+    group: operator 
+    mode: 0644
+
+- name: Deploy /etc/sysctl.conf
+  template:
+    src: sysctl.conf
+    dest: /etc/
+    owner: root 
+    group: wheel 
+    mode: 0644
+
+- name: Deploy /etc/doas.conf
+  template:
+    src: doas.conf
+    dest: /etc/
+    owner: root 
+    group: wheel 
+    mode: 0644
+
+- name: Deploy /etc/login.conf
+  template:
+    src: login.conf
+    dest: /etc/
+    owner: root 
+    group: wheel 
+    mode: 0644
+
+- name: Deploy /etc/ssh/sshd_config
+  template:
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+    owner: root 
+    group: wheel 
+    mode: 0644

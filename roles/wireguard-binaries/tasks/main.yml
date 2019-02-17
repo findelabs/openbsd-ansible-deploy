@@ -1,0 +1,46 @@
+---
+- name: Install packages required to build binaries
+  openbsd_pkg:
+    name: "{{ item }}"
+    state: present
+  register: build_list
+  loop: "{{ build_utils }}"
+
+- import_tasks: install-go.yml
+
+- name: Get wireguard distro list
+  shell: ftp -v -o - https://build.wireguard.com/distros.txt
+  register: distros
+  ignore_errors: true
+  changed_when: false
+
+- name: Clean up any existing files
+  file:
+    path: /usr/src/wireguard
+    state: absent
+
+- name: Create /usr/src/wireguard
+  file:
+    path: /usr/src/wireguard
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0755    
+
+- import_tasks: build-wireguard-kmodtools.yml
+
+- import_tasks: build-wireguard-go.yml
+
+- name: Clean up any remaining files
+  file:
+    path: /usr/src/wireguard
+    state: absent
+
+- name: Remove packages installed during build
+  openbsd_pkg:
+    name: "{{ item.name }}"
+    state: absent
+  ignore_errors: true
+  when: item.changed == true
+  loop: "{{ build_list.results }}"
+

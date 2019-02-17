@@ -1,0 +1,38 @@
+---
+- name: Temporarily install go binary package
+  openbsd_pkg:
+    name: "{{ item }}"
+    state: present
+  register: install_go
+  with_items:
+    - go
+
+- name: Download go source
+  get_url:
+    url: "https://dl.google.com/go/go{{ current_go_version.stdout }}.src.tar.gz"
+    dest: /tmp
+  changed_when: false
+
+- name: Extract go source
+  unarchive:
+    src: "/tmp/go{{ current_go_version.stdout }}.src.tar.gz"
+    dest: /usr/src/
+    remote_src: yes
+
+- name: Compile go
+  shell: cd /usr/src/go/src && ./make.bash
+  changed_when: false
+
+- name: Remove go binary package
+  openbsd_pkg: 
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - go
+
+- name: Install go to /usr/local/bin/
+  copy:
+    src: /usr/src/go/bin/go
+    dest: /usr/local/bin/
+    remote_src: yes
+    mode: 0755

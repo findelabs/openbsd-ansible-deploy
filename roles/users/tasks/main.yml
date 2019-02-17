@@ -1,0 +1,48 @@
+---
+- name: Create admins group
+  group:
+    name: admins
+    state: present
+
+- name: Create admin user
+  user:
+    name: admin
+    group: admins
+    home: /home/admin
+
+- name: Create admin's .ssh folder
+  file:
+    path: /home/admin/.ssh
+    owner: admin 
+    group: admins
+    state: directory 
+    mode: 0700
+
+- name: Add admin's default config files
+  template: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: admin 
+    group: admins
+    mode: 0644 
+    backup: yes
+  with_items:
+    - { src: '.bash_profile', dest: '/home/admin/.bash_profile' }
+    - { src: '.bashrc', dest: '/home/admin/.bashrc' }
+    - { src: '.profile', dest: '/home/admin/.profile' }
+    - { src: '.vimrc', dest: '/home/admin/.vimrc' }
+    - { src: '.tmux.conf', dest: '/home/admin/.tmux.conf' }
+
+- name: Add root's default config files
+  template: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: wheel
+    mode: 0644
+    backup: yes
+  with_items:
+    - { src: '.bash_profile', dest: '/root/.bash_profile' }
+    - { src: '.bashrc_root', dest: '/root/.bashrc' }
+    - { src: '.profile', dest: '/root/.profile' }
+    - { src: '.vimrc', dest: '/root/.vimrc' }

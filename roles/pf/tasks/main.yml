@@ -1,0 +1,20 @@
+---
+- name: Deploy pf.conf
+  template:
+    src: pf.conf
+    dest: /etc/
+    owner: root
+    group: wheel
+    mode: 0600
+    backup: no
+  notify:
+    - restart pf
+
+#- name: Push pf.conf
+#  file:
+#    path: /etc/pf.conf
+#    owner: admin
+#    group: wheel
+#    mode: 0600
+#  notify:
+#    - restart pf

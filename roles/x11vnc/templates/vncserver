@@ -1,0 +1,17 @@
+#!/bin/ksh
+#
+# $OpenBSD: x11vnc.rc,v 1.12 2018/01/11 19:27:12 rpe Exp $
+
+daemon="/usr/local/bin/x11vnc"
+daemon_flags="-xkb -logfile /var/log/vncserver -ncache 0 -forever -display :0 -listen 10.10.0.1 -auth /etc/X11/xenodm/authdir/authfiles/* -noshm"
+
+. /etc/rc.d/rc.subr
+
+rc_stop() {
+    ${daemon} -s stop || pkill -f "^${pexp}"
+}
+
+rc_bg=YES
+rc_reload=NO
+
+rc_cmd $1

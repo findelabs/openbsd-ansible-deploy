@@ -1,0 +1,85 @@
+---
+- name: Deploy hostname.tun3 for wireguard
+  template:
+    src: hostname.tun3
+    dest: /etc/
+    owner: root 
+    group: wheel
+    mode: 0640
+    backup: no
+
+- name: Create wireguard dir
+  file:
+    path: /etc/wireguard
+    owner: admin
+    group: wheel
+    state: directory
+    mode: 0755
+
+- name: Create wireguard keys dir
+  file:
+    path: /etc/wireguard/keys
+    owner: admin
+    group: wheel
+    state: directory
+    mode: 0755
+
+- name: Create wireguard configs dir
+  file:
+    path: /etc/wireguard/configs
+    owner: admin
+    group: wheel
+    state: directory
+    mode: 0755
+
+- name: Create bin dir
+  file:
+    path: /home/admin/bin
+    owner: admin
+    group: wheel
+    state: directory
+    mode: 0755
+
+- name: Deploy wgkeys.sh
+  template:
+    src: wgkeys.sh
+    dest: /home/admin/bin/wgkeys.sh
+    owner: admin
+    group: www
+    mode: 0755
+    backup: no
+
+- name: Check for server-private.key
+  shell: "ls /etc/wireguard/keys/server-private.key"
+  register: private_key
+  ignore_errors: true
+  changed_when: false
+  check_mode: no
+
+- name: Create wireguard server keys
+  shell: /usr/local/bin/wg genkey | tee /etc/wireguard/keys/server-private.key | /usr/local/bin/wg pubkey > /etc/wireguard/keys/server-public.key
+  register: serverkeys
+  changed_when: false
+  check_mode: no
+  when: "private_key.rc == 1"
+
+- name: Check for server-public.key
+  shell: "ls /etc/wireguard/keys/server-public.key"
+  register: public_key
+  ignore_errors: true
+  changed_when: false
+  check_mode: no
+
+- name: Create wireguard server keys
+  shell: cat /etc/wireguard/keys/server-private.key | /usr/local/bin/wg pubkey > /etc/wireguard/keys/server-public.key
+  register: serverkeys
+  changed_when: false
+  check_mode: no
+  when: "public_key.rc == 1"
+
+- name: Bring tun3 up
+  shell: sh /etc/netstart tun3
+  register: tunup
+  ignore_errors: true
+  changed_when: false
+  check_mode: no

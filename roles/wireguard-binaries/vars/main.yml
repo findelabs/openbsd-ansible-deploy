@@ -1,0 +1,8 @@
+---
+required_go_version: 1.11
+build_utils:
+  - bash
+  - gmake
+  - git
+  - xz
+  - gtar-1.30p0

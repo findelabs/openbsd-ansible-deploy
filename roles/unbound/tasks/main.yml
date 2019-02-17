@@ -1,0 +1,54 @@
+---
+- name: Deploy unbound config
+  template:
+    src: unbound.conf
+    dest: /var/unbound/etc/
+    owner: root
+    group: wheel
+    mode: 0644
+    backup: yes
+  notify:
+    - restart unbound
+
+- name: Create unbound log folder
+  file:
+    path: /var/unbound/log
+    owner: root
+    group: wheel
+    state: directory
+    mode: 0755
+
+- name: Create unbound log
+  copy:
+    content: ""
+    dest: /var/unbound/log/unbound.log
+    force: no
+    owner: _unbound
+    group: wheel
+    mode: 0644
+  notify:
+    - restart unbound
+
+- name: Check for root.key for dnssec
+  shell: "ls /var/unbound/db/root.key"
+  register: rootkey
+  ignore_errors: true
+  changed_when: false
+  check_mode: no
+
+- name: Restart unbound in preperation for root.key creation
+  service:
+    name: unbound
+    state: restarted
+
+- name: Create unbound root.key
+  shell: unbound-anchor -a "/var/unbound/db/root.key"
+  when: "rootkey.rc == 1"
+  notify:
+    - restart unbound
+
+- name: Ensure unbound is started and enabled
+  service:
+    name: unbound
+    state: started
+    enabled: yes

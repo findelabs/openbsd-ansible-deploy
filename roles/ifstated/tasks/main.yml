@@ -1,0 +1,17 @@
+---
+- name: Deploy ifstated.conf
+  template:
+    src: ifstated.conf
+    dest: /etc/
+    owner: root 
+    group: wheel
+    mode: 0644
+    backup: no
+  notify:
+    - restart ifstated
+
+- name: Ensure ifstated is started and enabled
+  service:
+    name: ifstated
+    enabled: yes
+    state: started
