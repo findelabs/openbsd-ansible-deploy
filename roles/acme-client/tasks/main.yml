@@ -1,0 +1,9 @@
+---
+- name: Deploy acme-client.conf
+  template:
+    src: acme-client.conf
+    dest: /etc/
+    owner: root 
+    group: wheel
+    mode: 0644
+    backup: no
