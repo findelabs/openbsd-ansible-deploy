@@ -31,4 +31,13 @@ usermod -p $(encrypt $admin_pass) admin
 echo "ssh-rsa AAAA...D9H7xnv admin@server" >> /home/admin/.ssh/authorized_keys
 ```
 
-Explore the bootstrap folder for more bootstrap scripts.
+## Current bootstrap scripts
+
+Here are the current bootstrap scripts available
+
+* bootstrap_basic.sh
+  - This deploys a very basic image
+* bootstrap_wireguard.sh
+  - This deploys an image configured as a wireguard server
+* bootstrap_wireguard_with_vnc.sh
+  - This deploys an image with wireguard, but includes a vnc server.
