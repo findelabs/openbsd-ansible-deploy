@@ -1,69 +1,34 @@
-# Wireguard server on OpenBSD
+# OpenBSD Ansible Dev
 
-This playbook will create a functional wireguard server, utilizing one tun device for multiple endpoint connections.
+This repo is used for testing quick deployment on Vultr. This is for development testing only, and will be changing often. There are two ways to use this playbook. Either install OpenBSD and install manaully, or use Startup Scripts on Vultr. Methods are explained below.
 
-## Installation
+## Manual Installation
 
 This playbook is designed to be run on a fresh OpenBSD installation. While this is not required, the playbook may unintentionally overwrite files.
 
 1. Install OpenBSD
-2. Download and run playbook
-  `ftp -o - https://gitlab.com/Verticaleap/openbsd-wg/raw/master/bootstrap.sh | sh`
+2. Download and run playbook to setup basic system
+  `ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_basic.sh | sh`
 3. Set admin password 
   `passwd admin`
 
-The following services are installed and configured:  
+## Scripted Startup Installation
 
-* wireguard-configs
-  - Configurations are stored in /etc/wireguard/
-  - wgkeys.sh script is created for simple management
-  - tun3 is set to start on boot to receive connections
-* wireguard-binaries
-  - No prepackaged OpenBSD Wireguard packages available currently
-  - Compiles wg, wg-quick, and wireguard-go from source
-  - Installs all required packages for build
-  - Will update WireGuard to current snapshot
-* unbound
-  - All DNS requests are routed to unbound
-  - DNSSec is enabled by default
-* vnstat
-  - Monitor the egress interface
-* ifstated
-  - Used to ensure the wireguard tunnel remains up
-* pf
-  - PF is used to provide NAT'ing to egress from the wireguard tunnel
-  - Blocks unnecessary connections to the server
-  - log interface set to egress
+Create a startup script on vultr:
 
-## Setting up wireguard
+```
+#!/bin/sh
 
-All commands should be run as the admin user just created
+admin_pass=password11
 
-* wgkeys.sh is installed within /home/admin/bin
-  - This simple script creates ten client configs and keys within /etc/wireguard when ran with no arguments
-* Simplify config imports by exporting client configs as qr codes
-  - Running `wgkeys.sh -q 1` will display the qr code for client1's config
+# Download and install OpenBSD with basic playbook
+ftp -o - https://gitlab.com/Verticaleap/openbsd-wg/raw/master/bootstraps/bootstrap_basic.sh | sh
 
-## Secure by default
+# Set admin password
+usermod -p $(encrypt $admin_pass) admin
 
-* Password logins over ssh are disabled
-* Admin user is created to reduce root usage
-* DNS over TLS enabled
+# Add public key to admin
+echo "ssh-rsa AAAA...D9H7xnv admin@server" >> /home/admin/.ssh/authorized_keys
+```
 
-## Additional tools installed
-
-The playbook installs following extra packages to assist with system monitoring, and more:  
-
-* vnstat
-* iftop
-* htop
-* git
-* mtr
-* vim
-
-
-## Finishing up
-
-Make sure to run syspatch regularily to keep your OpenBSD server up to date.
-
-Read about creating a wireguard server manually [here](https://www.findelabs.com/post/wireguard-on-openbsd/).
+Explore the bootstrap folder for more bootstrap scripts.
