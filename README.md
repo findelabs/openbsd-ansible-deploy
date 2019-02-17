@@ -1,6 +1,6 @@
 # OpenBSD Ansible Dev
 
-This repo is used for testing quick deployment on Vultr. This is for development testing only, and will be changing often. There are two ways to use this playbook. Either install OpenBSD and install manaully, or use Startup Scripts on Vultr. Methods are explained below.
+This repo is used for testing quick deployment on Vultr. This is for development testing only, and will be changing often. There are two ways to use this playbook. Either install OpenBSD and install manually, or use Startup Scripts on Vultr. Methods are explained below.
 
 ## Manual Installation
 
