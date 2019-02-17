@@ -1,0 +1,17 @@
+---
+- name: Deploy httpd.conf
+  template:
+    src: httpd.conf
+    dest: /etc/
+    owner: root 
+    group: wheel
+    mode: 0644
+    backup: no
+  notify:
+    - restart httpd
+
+- name: Ensure httpd is started and enabled
+  service:
+    name: httpd
+    state: started
+    enabled: yes
