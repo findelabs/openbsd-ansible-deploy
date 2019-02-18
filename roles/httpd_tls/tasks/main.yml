@@ -15,3 +15,10 @@
     name: httpd
     state: started
     enabled: yes
+
+- name: Download and refresh certs
+  cron:
+    name: "Download current certs"
+    hour: "0"
+    job: "/usr/sbin/acme-client www.{{ ansible_domain }} && rcctl reload httpd && logger 'Updated www.{{ ansible_domain }} ssl certs'"
+    user: root
