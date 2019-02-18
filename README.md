@@ -4,7 +4,7 @@ This repo is used for testing quick deployment on Vultr. This is for development
 
 ## Manual Installation
 
-This playbook is designed to be run on a fresh OpenBSD installation. While this is not required, the playbook may unintentionally overwrite files.
+This playbook is designed to be run on a fresh OpenBSD installation. While this is not required, the playbook may unintentionally overwrite files. Here is how to setup a basic install.
 
 1. Install OpenBSD
 2. Download and run playbook to setup basic system
@@ -14,7 +14,7 @@ This playbook is designed to be run on a fresh OpenBSD installation. While this 
 
 ## Scripted Startup Installation
 
-Create a startup script on vultr:
+Create a startup script on vultr, more examples can be found in example_startup_scripts. 
 
 ```
 #!/bin/sh
