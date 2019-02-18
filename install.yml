@@ -10,3 +10,5 @@
     - { role: vnstatd, tags: vnstatd }
     - { role: ifstated, tags: ifstated }
     - { role: x11vnc, tags: x11vnc }
+    - { role: httpd_basic, tags: httpd_basic }
+    - { role: httpd_tls, tags: httpd_tls }
