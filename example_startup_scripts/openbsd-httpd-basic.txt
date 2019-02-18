@@ -1,0 +1,14 @@
+#!/bin/sh
+
+export DOMAIN=mydomain.com
+
+admin_pass=password11
+
+# Download and install OpenBSD httpd basic
+ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_httpd_basic.sh | sh
+
+# Set admin password
+usermod -p $(encrypt $admin_pass) admin
+
+# Add public key to admin
+echo "ssh-rsa AAAAB3...H7xnv admin@server" >> /home/admin/.ssh/authorized_keys
