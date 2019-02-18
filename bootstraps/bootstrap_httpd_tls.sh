@@ -1,5 +1,5 @@
 # DOMAIN must be declared, so that httpd will be configured properly
-if [[ ! -e $DOMAIN ]]; then
+if [[ -z $DOMAIN ]]; then
     echo "DOMAIN must be declared"
     exit 1
 fi
