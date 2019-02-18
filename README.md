@@ -41,3 +41,8 @@ Here are the current bootstrap scripts available
   - This deploys an image configured as a wireguard server
 * bootstrap_wireguard_with_vnc.sh
   - This deploys an image with wireguard, but includes a vnc server.
+* bootstrap_httpd_basic.sh
+  - Creates a simple, unencrypted httpd install. DOMAIN must be declared prior to running bootstrap.
+* bootstrap_httpd_tls.sh
+  - Creates an encrypted httpd install. DOMAIN must be declared prior to running bootstrap.
+
