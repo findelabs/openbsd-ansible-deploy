@@ -20,5 +20,6 @@
   cron:
     name: "Download current certs"
     hour: "0"
+    minute: "0"
     job: "/usr/sbin/acme-client www.{{ ansible_domain }} && rcctl reload httpd && logger 'Updated www.{{ ansible_domain }} ssl certs'"
     user: root
