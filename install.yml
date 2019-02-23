@@ -1,9 +1,9 @@
 ---
 - hosts: 127.0.0.1
   roles:
-    - { role: pf, tags: pf }
     - { role: users, tags: users }
     - { role: system, tags: system }
+    - { role: wireguard-pf, tags: wireguard-pf }
     - { role: wireguard-binaries, tags: wireguard-binaries }
     - { role: wireguard-configs, tags: wireguard-configs }
     - { role: unbound, tags: unbound }
