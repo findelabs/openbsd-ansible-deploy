@@ -1,0 +1,55 @@
+# Globals
+
+# Override terminal default
+command term "xfce4-terminal"
+
+# Set default font for menus
+fontname "sans-serif:pixelsize=14:bold"
+
+# Snap-to within 10 pixels
+snapdist 10
+
+# Color things up
+borderwidth 2
+color activeborder   "#444444"
+color inactiveborder "#111111"
+#color urgencyborder "#"
+
+# Application menu
+command xterm       xfce4-terminal
+command chrome      chrome
+command notepad     gedit
+command nautilus    nautilus
+
+#
+# Inherit current selected group
+sticky yes
+
+
+################
+# Key bindings #
+################
+
+# Unbind some keys that are used in bash and tmux
+unbind-key M-period
+unbind-key M-Left
+unbind-key M-Right
+unbind-key M-Up
+unbind-key M-Down
+
+# Use Alt + num to focus on only specific group
+bind-key M-1           group-only-1
+bind-key M-2           group-only-2
+bind-key M-3           group-only-3
+bind-key M-4           group-only-4
+bind-key M-5           group-only-5
+
+# Add window to group
+bind-key CMS-1          window-movetogroup-1
+bind-key CMS-2          window-movetogroup-2
+bind-key CMS-3          window-movetogroup-3
+bind-key CMS-4          window-movetogroup-4
+bind-key CMS-5          window-movetogroup-5
+
+# Open application window with alt + m
+bind-key M-m        menu-cmd

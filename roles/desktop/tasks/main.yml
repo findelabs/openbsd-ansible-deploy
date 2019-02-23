@@ -1,0 +1,40 @@
+---
+- name: Install desktop packages
+  openbsd_pkg: name={{item}} state=present
+  with_items:
+    - compton
+    - feh
+    - xfce4-terminal
+    - nautilus
+    - chromium
+    - gedit
+
+- name: Deploy .cwmrc 
+  template:
+    src: cwmrc
+    dest: /home/admin/.cwmrc
+    owner: admin
+    mode: 0755
+
+- name: Deploy .xsession
+  template:
+    src: xsession
+    dest: /home/admin/.xsession
+    owner: admin
+    mode: 0755
+
+- name: Create Images folder
+  file:
+    path: /home/admin/Images
+    state: directory
+
+- name: Download wallpaper
+  get_url:
+    url: https://wallpapertag.com/wallpaper/full/2/9/8/135002-download-cool-dark-backgrounds-1920x1200.jpg
+    dest: /home/admin/Images
+
+- name: enabled xenodm
+  service:
+    name: xenodm
+    enabled: yes
+    state: started
