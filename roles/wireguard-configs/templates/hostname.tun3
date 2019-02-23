@@ -1,4 +1,4 @@
-inet 10.10.0.1 255.255.255.0 10.10.0.255 description "wireguard tunnel"
+inet 10.10.0.1 255.255.255.0 10.10.0.255 mtu 1420 description "wireguard tunnel"
 !/usr/local/bin/wireguard-go -f \$if &
 !/bin/sleep 2
 !/usr/local/bin/wg setconf \$if /etc/wireguard/configs/server.conf
