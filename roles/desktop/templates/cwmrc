@@ -11,9 +11,9 @@ snapdist 10
 
 # Color things up
 borderwidth 2
-color activeborder   "#444444"
+color activeborder   "#FFA733"
 color inactiveborder "#111111"
-#color urgencyborder "#"
+color urgencyborder  "#FF3333"
 
 # Application menu
 command xterm       xfce4-terminal
