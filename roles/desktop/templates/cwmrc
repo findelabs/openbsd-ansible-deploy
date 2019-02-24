@@ -18,6 +18,7 @@ color inactiveborder "#111111"
 # Application menu
 command xterm       xfce4-terminal
 command chrome      chrome
+command firefox     firefox
 command notepad     gedit
 command nautilus    nautilus
 
