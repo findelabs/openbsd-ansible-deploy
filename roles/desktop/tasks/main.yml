@@ -30,11 +30,23 @@
 
 - name: Download wallpaper
   get_url:
-    url: https://wallpapertag.com/wallpaper/full/2/9/8/135002-download-cool-dark-backgrounds-1920x1200.jpg
-    dest: /home/admin/Images
+#    url: https://wallpapertag.com/wallpaper/full/2/9/8/135002-download-cool-dark-backgrounds-1920x1200.jpg
+    url: https://images.pexels.com/photos/296884/pexels-photo-296884.jpeg?cs=srgb&dl=abstract-blank-board-296884.jpg&fm=jpg 
+    dest: /home/admin/Images/background.jpg
+    owner: admin
+    group: admins
 
 - name: enabled xenodm
   service:
     name: xenodm
     enabled: yes
     state: started
+
+- name: check install dmenu version
+  shell: dmenu -v
+  register: dmenuversion
+  changed_when: false
+  check_mode: no
+
+- include_tasks: compile-dmenu.yml
+  when: dmenuversion.stdout != "dmenu-4.9"
