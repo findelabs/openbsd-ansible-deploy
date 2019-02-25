@@ -1,0 +1,17 @@
+---
+- name: Download dmenu source
+  git:
+    repo: https://git.suckless.org/dmenu
+    force: yes
+    dest: /tmp/dmenu
+
+- name: Prepare config.mk for OpenBSD
+  lineinfile:
+    path: /tmp/dmenu/config.mk
+    regexp: '^#FREETYPEINC = $(X11INC)/freetype2'
+    line: 'FREETYPEINC = $(X11INC)/freetype2'
+
+- name: Make and install dmenu
+  make:
+    chdir: /tmp/dmenu
+    target: install
