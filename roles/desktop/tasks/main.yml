@@ -50,3 +50,16 @@
 
 - include_tasks: compile-dmenu.yml
   when: dmenuversion.stdout != "dmenu-4.9"
+
+- name: Ensure admin/bin exists
+  file:
+    path: /home/admin/bin
+    state: directory
+
+- name: Deploy dmenu_git.sh
+  template:
+    src: dmenu_git.sh
+    dest: /home/admin/bin
+    owner: admin
+    mode: 0755
+
