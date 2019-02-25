@@ -4,7 +4,7 @@
 /usr/local/bin/compton -cb -o0
 
 # Create a background
-/usr/local/bin/feh --bg-scale /home/admin/Images/135002-download-cool-dark-backgrounds-1920x1200.jpg
+/usr/local/bin/feh --bg-scale /home/admin/Images/background.jpg
 
 # Start cwm
 cwm
