@@ -80,3 +80,4 @@ bind-key CMS-9          window-movetogroup-9
 # Open application with alt + char
 bind-key M-m        menu-cmd
 bind-key M-e        dmenu_run
+bind-key M-g        dmenu_git.sh
