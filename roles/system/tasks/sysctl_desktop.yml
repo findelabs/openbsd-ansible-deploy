@@ -1,0 +1,8 @@
+---
+- name: Deploy desktop sysctl.conf
+  template:
+    src: sysctl_desktop.conf
+    dest: /etc/
+    owner: root 
+    group: wheel 
+    mode: 0644

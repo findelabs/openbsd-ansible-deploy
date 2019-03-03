@@ -1,0 +1,8 @@
+---
+- name: Deploy router sysctl.conf
+  template:
+    src: sysctl_router.conf
+    dest: /etc/
+    owner: root 
+    group: wheel 
+    mode: 0644

@@ -40,14 +40,6 @@
     group: operator 
     mode: 0644
 
-- name: Deploy /etc/sysctl.conf
-  template:
-    src: sysctl.conf
-    dest: /etc/
-    owner: root 
-    group: wheel 
-    mode: 0644
-
 - name: Deploy /etc/doas.conf
   template:
     src: doas.conf
