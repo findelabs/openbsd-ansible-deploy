@@ -12,4 +12,4 @@ cd /root/git/openbsd-ansible-dev/group_vars
 sed -i.bak "s/ansible_domain.*/ansible_domain: $DOMAIN/g" all
 
 # Run playbook
-cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,httpd_basic,acme-client,httpd_tls
+cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,httpd_basic,acme-client,httpd_tls,sysctl_router
