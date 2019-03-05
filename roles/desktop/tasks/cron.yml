@@ -1,0 +1,7 @@
+- name: Run daily config backups
+  cron:
+    name: "Backup configs"
+    minute: "0"
+    hour: "0"
+    job: "/home/admin/bin/backup_configs.sh"
+    user: admin

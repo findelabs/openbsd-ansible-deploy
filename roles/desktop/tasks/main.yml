@@ -63,3 +63,11 @@
     owner: admin
     mode: 0755
 
+- name: Deploy backup_configs.sh
+  template:
+    src: backup_configs.sh
+    dest: /home/admin/bin
+    owner: admin
+    mode: 0755
+
+- include_tasks: cron.yml
