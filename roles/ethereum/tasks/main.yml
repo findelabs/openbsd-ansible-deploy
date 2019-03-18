@@ -6,7 +6,7 @@
 
 - name: Create git directory
   file:
-    path: /home/admin/git
+    path: /root/git
     state: directory
     owner: admin
     group: admins
@@ -14,20 +14,20 @@
 
 - name: Download go-ethereum source
   git:
-    repo: git clone https://github.com/ethereum/go-ethereum
-    dest: /home/admin/git/go-ethereum
+    repo: https://github.com/ethereum/go-ethereum.git
+    dest: /root/git/go-ethereum
 
 - name: Correct line to include openbsd
   lineinfile:
-    path: /home/admin/git/go-ethereum/vendor/github.com/Azure/azure-storage-blob-go/2018-03-28/azblob/zc_mmf_unix.go
+    path: /root/git/go-ethereum/vendor/github.com/Azure/azure-storage-blob-go/2018-03-28/azblob/zc_mmf_unix.go
     state: present
     regexp: ^// +build
     line: // +build linux darwin freebsd openbsd
 
 - name: Make geth
   make:
-    chdir: /home/admin/git/go-ethereum
+    chdir: /root/git/go-ethereum
     target: geth
 
 - name: Install geth binary
-  shell: cp /home/admin/git/go-ethereum/build/bin/geth /usr/local/bin/
+  shell: cp /root/git/go-ethereum/build/bin/geth /usr/local/bin/
