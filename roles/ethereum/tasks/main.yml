@@ -28,7 +28,7 @@
   lineinfile:
     path: /root/git/go-ethereum/cmd/geth/main.go
     state: present
-    regexp: ^.*allowance
+    regexp: allowance := int(mem.Total / 1024 / 1024 / 3)
     line: allowance := 512
 
 - name: Make geth
