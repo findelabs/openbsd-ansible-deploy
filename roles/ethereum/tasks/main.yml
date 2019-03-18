@@ -21,7 +21,7 @@
   lineinfile:
     path: /root/git/go-ethereum/vendor/github.com/Azure/azure-storage-blob-go/2018-03-28/azblob/zc_mmf_unix.go
     state: present
-    regexp: ^// +build
+    regexp: ^//
     line: // +build linux darwin freebsd openbsd
 
 - name: Make geth
