@@ -24,6 +24,13 @@
     regexp: ^//
     line: // +build linux darwin freebsd openbsd
 
+- name: Correct line to ensure allowance is at least 512
+  lineinfile:
+    path: /root/git/go-ethereum/cmd/geth/main.go
+    state: present
+    regexp: ^.*allowance
+    line: allowance := 512
+
 - name: Make geth
   make:
     chdir: /root/git/go-ethereum
