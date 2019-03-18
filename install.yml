@@ -13,3 +13,4 @@
     - { role: httpd_basic, tags: httpd_basic }
     - { role: httpd_tls, tags: httpd_tls }
     - { role: desktop, tags: desktop }
+    - { role: ethereum, tags: ethereum }
