@@ -16,6 +16,7 @@
   git:
     repo: https://github.com/ethereum/go-ethereum.git
     dest: /root/git/go-ethereum
+    force: yes
 
 - name: Correct line to include openbsd
   lineinfile:
@@ -31,3 +32,18 @@
 
 - name: Install geth binary
   shell: cp /root/git/go-ethereum/build/bin/geth /usr/local/bin/
+
+- name: Deploy flow_captured service
+  template:
+    src: flow_captured
+    dest: /etc/rc.d
+    owner: root
+    group: wheel
+    mode: 0755
+    backup: no
+
+- name: Ensure flow_captured is enabled and started
+  service:
+    name: flow_captured
+    state: started
+    enabled: yes
