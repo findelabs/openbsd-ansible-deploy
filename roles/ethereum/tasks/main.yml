@@ -33,17 +33,17 @@
 - name: Install geth binary
   shell: cp /root/git/go-ethereum/build/bin/geth /usr/local/bin/
 
-- name: Deploy flow_captured service
+- name: Deploy gethd service
   template:
-    src: flow_captured
+    src: gethd
     dest: /etc/rc.d
     owner: root
     group: wheel
     mode: 0755
     backup: no
 
-- name: Ensure flow_captured is enabled and started
+- name: Ensure gethd is enabled and started
   service:
-    name: flow_captured
+    name: gethd
     state: started
     enabled: yes
