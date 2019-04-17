@@ -37,6 +37,6 @@
 
 - name: Install wg and wg-quick
   shell: "cd /usr/src/wireguard && gmake -j$(sysctl -n hw.ncpu) -C \"WireGuard-{{ kmodtools_version.stdout }}/src/tools\" WITH_WGQUICK=yes PREFIX=/usr/local install"
-  changed_when: false
+  changed_when: true
   when: wg_md5.rc != 0 or wgquick_md5.rc != 0
 
