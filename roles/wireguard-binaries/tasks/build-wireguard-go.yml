@@ -31,5 +31,5 @@
 
 - name: Install wireguard-go
   shell: "cd /usr/src/wireguard && gmake -j$(sysctl -n hw.ncpu) -C \"wireguard-go-{{ wireguard_version.stdout }}\" PREFIX=/usr/local install"
-  changed_when: false
+  changed_when: true
   when: wireguardgo_md5.rc != 0
