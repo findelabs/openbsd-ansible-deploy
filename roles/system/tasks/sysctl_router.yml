@@ -2,7 +2,7 @@
 - name: Deploy router sysctl.conf
   template:
     src: sysctl_router.conf
-    dest: /etc/
+    dest: /etc/sysctl.conf
     owner: root 
     group: wheel 
     mode: 0644
