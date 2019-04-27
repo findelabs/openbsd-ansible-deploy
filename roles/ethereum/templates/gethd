@@ -1,0 +1,17 @@
+#!/bin/ksh
+#
+
+daemon="/usr/local/bin/geth"
+daemon_flags="--syncmode "fast""
+
+. /etc/rc.d/rc.subr
+
+rc_reload() {
+    ${daemon} -s reload
+}
+
+rc_stop() {
+    ${daemon} -s stop || pkill -f "^${pexp}"
+}
+
+rc_cmd $1

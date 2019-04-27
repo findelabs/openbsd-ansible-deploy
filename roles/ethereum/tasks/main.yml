@@ -1,0 +1,49 @@
+---
+- name: Install go
+  openbsd_pkg:
+    name: go
+    state: present
+
+- name: Create git directory
+  file:
+    path: /root/git
+    state: directory
+    owner: admin
+    group: admins
+    mode: 0755
+
+- name: Download go-ethereum source
+  git:
+    repo: https://github.com/ethereum/go-ethereum.git
+    dest: /root/git/go-ethereum
+    force: yes
+
+- name: Correct line to include openbsd
+  lineinfile:
+    path: /root/git/go-ethereum/vendor/github.com/Azure/azure-storage-blob-go/2018-03-28/azblob/zc_mmf_unix.go
+    state: present
+    regexp: ^//
+    line: // +build linux darwin freebsd openbsd
+
+- name: Make geth
+  make:
+    chdir: /root/git/go-ethereum
+    target: geth
+
+- name: Install geth binary
+  shell: cp /root/git/go-ethereum/build/bin/geth /usr/local/bin/
+
+- name: Deploy gethd service
+  template:
+    src: gethd
+    dest: /etc/rc.d
+    owner: root
+    group: wheel
+    mode: 0755
+    backup: no
+
+- name: Ensure gethd is enabled and started
+  service:
+    name: gethd
+    state: started
+    enabled: yes
