@@ -9,6 +9,7 @@
     name: admin
     group: admins
     home: /home/admin
+    shell: /bin/ksh
 
 - name: Create admin's .ssh folder
   file:
@@ -29,6 +30,7 @@
   with_items:
     - { src: '.bash_profile', dest: '/home/admin/.bash_profile' }
     - { src: '.bashrc', dest: '/home/admin/.bashrc' }
+    - { src: '.kshrc', dest: '/home/admin/.kshrc' }
     - { src: '.profile', dest: '/home/admin/.profile' }
     - { src: '.vimrc', dest: '/home/admin/.vimrc' }
     - { src: '.tmux.conf', dest: '/home/admin/.tmux.conf' }
@@ -44,5 +46,6 @@
   with_items:
     - { src: '.bash_profile', dest: '/root/.bash_profile' }
     - { src: '.bashrc_root', dest: '/root/.bashrc' }
+    - { src: '.kshrc_root', dest: '/root/.kshrc' }
     - { src: '.profile', dest: '/root/.profile' }
     - { src: '.vimrc', dest: '/root/.vimrc' }
