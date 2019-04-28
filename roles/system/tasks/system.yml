@@ -23,12 +23,11 @@
       - wget
       - libqrencode
 
-- name: Set users shell to bash 
+- name: Set root's shell to bash 
   user: 
     name: "{{ item }}"
     shell: /usr/local/bin/bash
   with_items:
-    - admin
     - root
 
 - name: Deploy /etc/motd 
