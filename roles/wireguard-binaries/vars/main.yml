@@ -5,4 +5,4 @@ build_utils:
   - gmake
   - git
   - xz
-  - gtar-1.30p0
+  - gtar-1.32
