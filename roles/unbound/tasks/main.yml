@@ -38,14 +38,12 @@
 
 - name: Create unbound root.key
   shell: unbound-anchor -a "/var/unbound/db/root.key"
-  when: "rootkey.rc == 1"
+  creates: /var/unbound/db/root.key
+  register: createrootkey
+  changed_when: false
+  failed_when: createrootkey.rc == 2
   notify:
     - restart unbound
-
-#- name: Restart unbound in preperation for root.key creation
-#  service:
-#    name: unbound
-#    state: restarted
 
 - name: Ensure unbound is started and enabled
   service:
