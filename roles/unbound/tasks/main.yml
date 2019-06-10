@@ -38,6 +38,7 @@
 
 - name: Create unbound root.key
   shell: unbound-anchor -a "/var/unbound/db/root.key"
+  args:
     creates: /var/unbound/db/root.key
   register: createrootkey
   changed_when: false
