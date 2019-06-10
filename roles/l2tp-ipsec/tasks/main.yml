@@ -51,6 +51,12 @@
     owner: root
     mode: 0600
 
+- name: Enable isakmpd
+  service:
+    name: isakmpd
+    state: started
+    enabled: yes
+
 - name: Set isakmpd flags
   shell: rcctl set isakmpd flags -K
   changed_when: false
