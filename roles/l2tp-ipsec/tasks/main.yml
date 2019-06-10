@@ -63,6 +63,10 @@
 
 - name: Enable necessary services
   service:
-    name: ['isakmpd','ipsec','npppd']
+    name: "{{ item }}"
     state: started
     enabled: yes
+  with_items:
+    - isakmpd
+    - ipsec
+    - npppd
