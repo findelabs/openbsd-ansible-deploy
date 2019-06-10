@@ -1,9 +1,9 @@
 ---
 - name: Get user variables
   set_fact:
-    user:  "{{ username }}"
-    pass:  "{{ password }}"
-    psk:  "{{ ipsecpsk }}"
+    username:  "{{ user }}"
+    password:  "{{ pass }}"
+    ipsecpsk:  "{{ psk }}"
 
 - name: Enable gre
   sysctl:
