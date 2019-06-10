@@ -36,16 +36,16 @@
   changed_when: false
   check_mode: no
 
-- name: Restart unbound in preperation for root.key creation
-  service:
-    name: unbound
-    state: restarted
-
 - name: Create unbound root.key
   shell: unbound-anchor -a "/var/unbound/db/root.key"
   when: "rootkey.rc == 1"
   notify:
     - restart unbound
+
+#- name: Restart unbound in preperation for root.key creation
+#  service:
+#    name: unbound
+#    state: restarted
 
 - name: Ensure unbound is started and enabled
   service:
