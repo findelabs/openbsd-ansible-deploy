@@ -54,7 +54,6 @@
 - name: Enable isakmpd
   service:
     name: isakmpd
-    state: started
     enabled: yes
 
 - name: Enable ipsec
