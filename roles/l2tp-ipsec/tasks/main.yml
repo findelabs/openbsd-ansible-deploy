@@ -14,7 +14,7 @@
     reload: yes
 
 - name: Enable pipex
-- sysctl:
+  sysctl:
     name: net.pipex.enable
     value: 1
     sysctl_set: yes
