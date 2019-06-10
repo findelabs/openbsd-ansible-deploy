@@ -73,3 +73,6 @@
   with_items:
     - isakmpd
     - npppd
+
+- name: Reboot the server
+  reboot:
