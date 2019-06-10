@@ -14,4 +14,4 @@
     - { role: httpd_tls, tags: httpd_tls }
     - { role: desktop, tags: desktop }
     - { role: ethereum, tags: ethereum }
-    - { role: l2tp_ipsec, tags: l2tp_ipsec }
+    - { role: l2tp-ipsec, tags: l2tp-ipsec }
