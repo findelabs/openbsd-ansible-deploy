@@ -1,0 +1,62 @@
+---
+- name: Get user variables
+  set_fact:
+    username:  "{{ lookup('env','USERNAME') }}"
+    password:  "{{ lookup('env','PASSWORD') }}"
+    ipsec_psk:  "{{ lookup('env','IPSECPSK') }}"
+
+- name: Enable gre
+  sysctl:
+    name: net.inet.gre.allow
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Enable pipex
+- sysctl:
+    name: net.pipex.enable
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Deploy npppd.conf
+  template:
+    src: npppd.conf
+    dest: /etc/npppd/npppd.conf
+    owner: root
+    mode: 0640
+
+- name: Deploy npppd-users
+  template:
+    src: npppd-users.j2
+    dest: /etc/npppd/npppd-users
+    owner: root
+    mode: 0600
+
+- name: Deploy ipsec.conf
+  template:
+    src: ipsec.conf.j2
+    dest: /etc/ipsec.conf
+    owner: root
+    mode: 0600
+  notify:
+    - load ipsec.conf
+
+- name: Deploy pf.conf
+  template:
+    src: pf.conf
+    dest: /etc/pf.conf
+    owner: root
+    mode: 0600
+
+- name: Set isakmpd flags
+  shell: rcctl set isakmpd flags -K
+  changed_when: false
+
+- name: Enable necessary services
+  service:
+    name: ['isakmpd','ipsec','npppd']
+    state: started
+    enabled: yes

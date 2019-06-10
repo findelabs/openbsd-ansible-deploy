@@ -1,0 +1,8 @@
+- name: restart npppd
+  service: 
+    name: npppd
+    state: restarted
+
+- name: load ipsec.conf
+  shell: ipsecctl -f /etc/ipsec.conf
+

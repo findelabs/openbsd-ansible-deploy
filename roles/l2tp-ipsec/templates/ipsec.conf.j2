@@ -1,0 +1,4 @@
+ike dynamic esp transport from {{ ansible_default_ipv4.address }} to any \
+    main group "modp1024" auth hmac-sha1 enc 3des\
+    quick group "modp1024" auth hmac-sha1 enc 3des \
+    psk "{{ IPSECPSK }}"
