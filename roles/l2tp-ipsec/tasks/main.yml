@@ -57,6 +57,11 @@
     state: started
     enabled: yes
 
+- name: Enable ipsec
+  service:
+    name: ipsec
+    enabled: yes
+
 - name: Set isakmpd flags
   shell: rcctl set isakmpd flags -K
   changed_when: false
@@ -68,5 +73,4 @@
     enabled: yes
   with_items:
     - isakmpd
-    - ipsec
     - npppd
