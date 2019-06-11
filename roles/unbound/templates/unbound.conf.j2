@@ -2,7 +2,7 @@ server:
    access-control: 10.0.0.0/8 allow                                    
    access-control: 127.0.0.0/8 allow                                   
    logfile: /var/unbound/log/unbound.log
-   interface: {{ unbound_interface }}
+   interface: {{ unbound_address }}
    auto-trust-anchor-file: "/var/unbound/db/root.key"
    use-syslog: no         # yes makes no difference...
    aggressive-nsec: yes
