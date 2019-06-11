@@ -8,7 +8,7 @@
 
 - name: Deploy vnstat.conf 
   template:
-    src: vnstat.conf
+    src: vnstat.conf.j2
     dest: /etc/vnstat.conf
     owner: root 
     group: wheel 
