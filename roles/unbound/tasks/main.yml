@@ -1,8 +1,8 @@
 ---
 - name: Deploy unbound config
   template:
-    src: unbound.conf
-    dest: /var/unbound/etc/
+    src: unbound.conf.j2
+    dest: /var/unbound/etc/unbound.conf
     owner: root
     group: wheel
     mode: 0644
