@@ -8,4 +8,4 @@ fi
 
 
 # Run playbook
-cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,l2tp-ipsec,vnstatd,unbound --extra-vars="user=$USERNAME pass=$PASSWORD psk=$PSK unbound_address=10.0.0.1 vnstatd_interface=tun0"
+cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,l2tp-ipsec,vnstatd,unbound,sysctl_router --extra-vars="user=$USERNAME pass=$PASSWORD psk=$PSK unbound_address=10.0.0.1 vnstatd_interface=tun0"
