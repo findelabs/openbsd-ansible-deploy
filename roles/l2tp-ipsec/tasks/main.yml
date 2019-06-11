@@ -65,6 +65,12 @@
   shell: rcctl set isakmpd flags -K
   changed_when: false
 
+- name: Ensure that isakmpd flags are correct
+  lineinefile:
+    path: /var/run/rc.d/isakmpd
+    regexp: '^daemon_flags='
+    line: daemon_flags=-K
+
 - name: Enable necessary services
   service:
     name: "{{ item }}"
