@@ -62,14 +62,8 @@
     enabled: yes
 
 - name: Set isakmpd flags
-  shell: rcctl set isakmpd flags -K
+  shell: rcctl set isakmpd flags -K && sleep 2
   changed_when: false
-
-- name: Ensure that isakmpd flags are correct
-  lineinfile:
-    path: /var/run/rc.d/isakmpd
-    regexp: '^daemon_flags='
-    line: daemon_flags=-K
 
 - name: Enable necessary services
   service:
