@@ -66,7 +66,7 @@
   changed_when: false
 
 - name: Ensure that isakmpd flags are correct
-  lineinefile:
+  lineinfile:
     path: /var/run/rc.d/isakmpd
     regexp: '^daemon_flags='
     line: daemon_flags=-K
