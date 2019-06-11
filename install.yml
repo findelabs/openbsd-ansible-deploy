@@ -6,6 +6,7 @@
     - { role: wireguard-pf, tags: wireguard-pf }
     - { role: wireguard-binaries, tags: wireguard-binaries }
     - { role: wireguard-configs, tags: wireguard-configs }
+    - { role: l2tp-ipsec, tags: l2tp-ipsec }
     - { role: unbound, tags: unbound }
     - { role: vnstatd, tags: vnstatd }
     - { role: ifstated, tags: ifstated }
@@ -14,4 +15,3 @@
     - { role: httpd_tls, tags: httpd_tls }
     - { role: desktop, tags: desktop }
     - { role: ethereum, tags: ethereum }
-    - { role: l2tp-ipsec, tags: l2tp-ipsec }
