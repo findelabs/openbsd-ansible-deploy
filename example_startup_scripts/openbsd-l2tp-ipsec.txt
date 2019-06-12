@@ -3,9 +3,11 @@
 admin_pass=password11
 
 # L2TP-IPSec Creds
-USERNAME=test
-PASSWORD=testpass
-PSK=mypsk
+export USERNAME=test
+export PASSWORD=testpass
+export PSK=mypsk
+export GMAIL_ACCOUNT=myacct
+export GMAIL_SECRET=mypass
 
 # Download and install OpenBSD-Wireguard
 ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_l2tp-ipsec.sh | sh

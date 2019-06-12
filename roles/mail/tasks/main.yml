@@ -1,0 +1,60 @@
+---
+- name: Check mandatory variables are defined
+  assert:
+    that:
+      - gmail_account is defined
+      - gmail_secret is defined
+
+- name: Deploy opensmtpd smtpd.conf
+  template:
+    src: smtpd.conf
+    dest: /etc/mail/
+    owner: root 
+    group: wheel
+    mode: 0644
+    backup: no
+  notify:
+    - restart smtpd
+
+- name: Deploy opensmtpd aliases 
+  template:
+    src: aliases
+    dest: /etc/mail/
+    owner: root 
+    group: _smtpd
+    mode: 0644
+    backup: no
+  notify:
+    - restart smtpd
+
+- name: Check for secrets.db
+  shell: "ls /etc/mail/secrets.db"
+  register: secretsdb
+  ignore_errors: true
+  changed_when: false
+  check_mode: no
+
+- name: Deploy opensmtpd secrets
+  template:
+    src: secrets
+    dest: /etc/mail
+    owner: root 
+    group: _smtpd
+    mode: 0640
+    backup: no
+  when: "secretsdb.rc == 1"
+  notify:
+    - restart smtpd
+
+- name: Create secrets db
+  shell: "cd /etc/mail && /usr/sbin/makemap secrets"
+  args:
+    creates: /etc/mail/secrets.db
+  when: "secretsdb.rc == 1"
+  notify:
+    - restart smtpd
+
+- name: Remove secrets file
+  file:
+    state: absent
+    path: "/etc/mail/secrets"
