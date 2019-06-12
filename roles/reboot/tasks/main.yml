@@ -1,0 +1,3 @@
+- name: reboot the server
+  shell: reboot
+  failed_when: false
