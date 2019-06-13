@@ -51,10 +51,14 @@
     owner: root
     mode: 0600
 
-- name: Enable isakmpd
+- name: Enable services
   service:
-    name: isakmpd
+    name: "{{ item }}"
     enabled: yes
+  with_items:
+    - isakmpd
+    - npppd
+    - ipsec
 
 - name: Enable ipsec
   service:
@@ -65,12 +69,6 @@
   shell: rcctl set isakmpd flags -K
   changed_when: false
 
-#- name: Ensure that isakmpd flags are correct
-#  lineinfile:
-#    path: /etc/rc.conf.local
-#    regexp: '^isakmpd_flags='
-#    line: isakmpd_flags=-K
-
 - name: Deploy isakmpd var file to ensure it starts corectly
   template:
     src: isakmpd
@@ -79,11 +77,16 @@
     group: wheel
     mode: 0644
 
+- name: Ensure that isakmpd flags are correct
+  lineinfile:
+    path: /etc/rc.conf.local
+    regexp: '^isakmpd_flags='
+    line: isakmpd_flags=-K
+
 - name: Enable necessary services
   service:
     name: "{{ item }}"
     state: started
-    enabled: yes
   with_items:
     - isakmpd
     - npppd
