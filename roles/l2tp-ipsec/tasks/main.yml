@@ -76,7 +76,7 @@
     src: isakmpd
     dest: /var/run/rc.d/isakmpd
     owner: root
-    wheel: wheel
+    group: wheel
     mode: 0644
 
 - name: Enable necessary services
