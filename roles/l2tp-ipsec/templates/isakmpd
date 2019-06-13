@@ -1,0 +1,6 @@
+daemon_class=daemon
+daemon_flags=-K
+daemon_rtable=0
+daemon_timeout=30
+daemon_user=root
+pexp=isakmpd: monitor \[priv\]
