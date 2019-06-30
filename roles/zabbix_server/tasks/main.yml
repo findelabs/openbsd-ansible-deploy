@@ -36,6 +36,10 @@
     state: present
     reload: yes
 
+- name: Install required python modules
+  pip:
+    name: psycopg2
+
 - name: Initialize postgresql
   shell: su _postgresql -c initdb -D /var/postgresql/data -U postgres -A md5 -W
   args:
