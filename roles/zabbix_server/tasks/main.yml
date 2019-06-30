@@ -42,9 +42,12 @@
     executable: pip3.6
 
 - name: Initialize postgresql
-  shell: su _postgresql -c echo -e "root11\nroot11" | initdb -D /var/postgresql/data -U postgres -A trust -W
+  shell: echo -e "root11\nroot11" | initdb -D /var/postgresql/data -U postgres -A trust -W
   args:
     creates: /var/postgresql/data
+  become: yes
+  become_user: _postgresql
+  become_method: su
 
 - name: Start postgresql
   service:
