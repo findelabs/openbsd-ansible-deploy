@@ -41,14 +41,20 @@
     name: psycopg2
     executable: pip3.6
 
-
 - name: Initialize postgresql
   shell: su _postgresql -c initdb -D /var/postgresql/data -U postgres -A md5 -W
   args:
     creates: /var/postgresql/data
 
+- name: Start postgresql
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
 - name: Create zabbix user, set password, grant privs
   postgresql_user:
+    db: postgresql
     name: zabbix
     password: zabbix
     role_attr_flags: CREATEDB,NOSUPERUSER,NOCREATEROLE
