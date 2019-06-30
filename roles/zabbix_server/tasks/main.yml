@@ -38,7 +38,8 @@
 
 - name: Initialize postgresql
   shell: su _postgresql -c initdb -D /var/postgresql/data -U postgres -A md5 -W
-  creates: /var/postgresql/data
+  args:
+    creates: /var/postgresql/data
 
 - name: Create zabbix user, set password, grant privs
   postgresql_user:
