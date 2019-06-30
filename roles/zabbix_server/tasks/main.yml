@@ -60,6 +60,7 @@
     role_attr_flags: CREATEDB,NOSUPERUSER,NOCREATEROLE
   become: yes
   become_user: _postgresql
+  become_method: su
 
 - name: Create zabbix database
   postgresql_db:
@@ -67,4 +68,5 @@
     owner: zabbix
   become: yes
   become_user: _postgresql
+  become_method: su
     
