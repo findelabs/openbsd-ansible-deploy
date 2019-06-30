@@ -89,4 +89,16 @@
   become: yes
   become_user: _postgresql
   become_method: su
-  
+
+- name: Add DBPassword into zabbix_server.conf
+  lineinfile:
+    path: /etc/zabbix/zabbix_server.conf
+    regexp: '^DBPassword='
+    line: DBPassword=zabbix
+
+- name: Start zabbix_server
+  service:
+    name: zabbix_server
+    state: started
+
+ 
