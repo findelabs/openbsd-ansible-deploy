@@ -57,7 +57,6 @@
 
 - name: Create zabbix user, set password, grant privs
   postgresql_user:
-    db: postgresql
     name: zabbix
     password: zabbix
     role_attr_flags: CREATEDB,NOSUPERUSER,NOCREATEROLE
