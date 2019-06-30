@@ -11,3 +11,43 @@
     owner: root
     group: wheel
     mode: 0644
+
+- name: Configure sysctl kern.seminfo.semmni
+  sysctl:
+    name: kern.seminfo.semmni
+    value: 30
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Configure sysctl kern.seminfo.semmns
+  sysctl:
+    name: kern.seminfo.semmns
+    value: 120
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Configure sysctl kern.shminfo.shmall
+  sysctl:
+    name: sysctl kern.shminfo.shmall
+    value: 524288
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Initialize postgresql
+  shell: su _postgresql -c initdb -D /var/postgresql/data -U postgres -A md5 -W
+  creates: /var/postgresql/data
+
+- name: Create zabbix user, set password, grant privs
+  postgresql_user:
+    name: zabbix
+    password: zabbix
+    role_attr_flags: CREATEDB,NOSUPERUSER,NOCREATEROLE
+
+- name: Create zabbix database
+  postgresql_db:
+    name: zabbix
+    owner: zabbix
+    
