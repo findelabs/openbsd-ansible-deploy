@@ -101,4 +101,20 @@
     name: zabbix_server
     state: started
 
+- name: Start php service
+  service: 
+    name: php71_fpm
+    state: started
  
+- name: Template out httpd.conf
+  template:
+    src: httpd.conf
+    dest: /etc/httpd.conf
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: Start httpd
+  service: 
+    name: httpd
+    state: started
