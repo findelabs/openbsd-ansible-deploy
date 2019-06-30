@@ -72,3 +72,21 @@
   become_user: _postgresql
   become_method: su
     
+- name: Initialize schema
+  shell: cat /usr/local/share/zabbix/schema/postgresql/schema.sql | psql -U zabbix zabbix
+  become: yes
+  become_user: _postgresql
+  become_method: su
+  
+- name: Initialize images
+  shell: cat /usr/local/share/zabbix/schema/postgresql/images.sql | psql -U zabbix zabbix
+  become: yes
+  become_user: _postgresql
+  become_method: su
+  
+- name: Initialize data
+  shell: cat /usr/local/share/zabbix/schema/postgresql/data.sql | psql -U zabbix zabbix
+  become: yes
+  become_user: _postgresql
+  become_method: su
+  
