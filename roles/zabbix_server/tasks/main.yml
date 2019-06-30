@@ -42,7 +42,7 @@
     executable: pip3.6
 
 - name: Initialize postgresql
-  shell: su _postgresql -c initdb -D /var/postgresql/data -U postgres -A md5 -W
+  shell: su _postgresql -c echo -e "root11\nroot11" | initdb -D /var/postgresql/data -U postgres -A md5 -W
   args:
     creates: /var/postgresql/data
 
@@ -58,9 +58,13 @@
     name: zabbix
     password: zabbix
     role_attr_flags: CREATEDB,NOSUPERUSER,NOCREATEROLE
+  become: yes
+  become_user: _postgresql
 
 - name: Create zabbix database
   postgresql_db:
     name: zabbix
     owner: zabbix
+  become: yes
+  become_user: _postgresql
     
