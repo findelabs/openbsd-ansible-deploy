@@ -3,3 +3,11 @@
   openbsd_pkg:
     name: ['zabbix-server-4.0.0-pgsql','zabbix-web-4.0.0p0','postgresql-server-11.2p1']
     state: present
+
+- name: Template out login.conf
+  template:
+    src: login.conf
+    dest: /etc/login.conf
+    owner: root
+    group: wheel
+    mode: 0644
