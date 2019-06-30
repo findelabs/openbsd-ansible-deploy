@@ -39,6 +39,8 @@
 - name: Install required python modules
   pip:
     name: psycopg2
+    executable: pip3.6
+
 
 - name: Initialize postgresql
   shell: su _postgresql -c initdb -D /var/postgresql/data -U postgres -A md5 -W
