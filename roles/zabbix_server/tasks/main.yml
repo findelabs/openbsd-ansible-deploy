@@ -42,7 +42,7 @@
     executable: pip3.6
 
 - name: Initialize postgresql
-  shell: su _postgresql -c echo -e "root11\nroot11" | initdb -D /var/postgresql/data -U postgres -A md5 -W
+  shell: su _postgresql -c echo -e "root11\nroot11" | initdb -D /var/postgresql/data -U postgres -A trust -W
   args:
     creates: /var/postgresql/data
 
