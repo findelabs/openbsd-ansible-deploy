@@ -41,6 +41,7 @@
     name: psycopg2
     executable: pip3.6
 
+# This part still is asking for the password when running the playbook
 - name: Initialize postgresql
   shell: echo -e "root11\nroot11" | initdb -D /var/postgresql/data -U postgres -A trust -W
   args:
