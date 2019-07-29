@@ -104,11 +104,13 @@
   service:
     name: zabbix_server
     state: started
+    enabled: yes
 
 - name: Start php service
   service: 
     name: php71_fpm
     state: started
+    enabled: yes
  
 - name: Template out httpd.conf
   template:
@@ -122,3 +124,4 @@
   service: 
     name: httpd
     state: started
+    enabled: yes
