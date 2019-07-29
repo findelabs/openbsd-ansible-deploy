@@ -120,6 +120,12 @@
     group: wheel
     mode: 0644
 
+- name: Start php71_fpm
+  service: 
+    name: php71_fpm
+    state: started
+    enabled: yes
+
 - name: Start httpd
   service: 
     name: httpd
