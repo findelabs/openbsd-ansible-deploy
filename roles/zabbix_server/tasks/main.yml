@@ -1,4 +1,11 @@
 ---
+
+# Need to update /var/www/zabbix/conf/zabbix.conf to use correct DB values
+# DB Type is POSTGRESQL
+# DB SERVER is 127.0.0.1
+# DB Port is 5432
+# Password is zabbix
+
 - name: install zabbix server
   openbsd_pkg:
     name: ['zabbix-server-4.0.0-pgsql','zabbix-web-4.0.0p0','postgresql-server-11.2p1','py3-pip','php-pgsql-7.1.28','php-curl-7.1.28','php-intl-7.1.28','php-pdo_pgsql-7.1.28']
@@ -119,6 +126,14 @@
     owner: root
     group: wheel
     mode: 0644
+
+- name: Template out zabbix.conf.php
+  template:
+    src: zabbix.conf.php
+    dest: /var/www/zabbix/conf/zabbix.conf.php
+    owner: root
+    group: www
+    mode: 0640
 
 - name: Start php71_fpm
   service: 
