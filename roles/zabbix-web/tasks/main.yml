@@ -1,15 +1,26 @@
 ---
+- name: Check for postgres installation
+  command: command -v postgres
+  changed_when: false
+  failed_when: false
+  register: postgres_install_check
 
-# Need to update /var/www/zabbix/conf/zabbix.conf to use correct DB values
-# DB Type is POSTGRESQL
-# DB SERVER is 127.0.0.1
-# DB Port is 5432
-# Password is zabbix
+- name: If zabbis_postgres_ip is not defined, and postgres is not already installed, fail
+  fail:
+    msg: zabbix_postgres_ip is not defined, and postgres is not installed on this host
+  when:
+    - postgres_install_check.rc == 1
+    - zabbix_postgres_ip is not defined
 
-- name: install zabbix server
+- name: Install zabbix server
   openbsd_pkg:
-    name: ['zabbix-server-4.0.0-pgsql','zabbix-web-4.0.0p0','postgresql-server-11.2p1','py3-pip','php-pgsql-7.1.28','php-curl-7.1.28','php-intl-7.1.28','php-pdo_pgsql-7.1.28']
+    name: ['zabbix-server-4.0.0-pgsql','zabbix-web-4.0.0p0','py3-pip','php-pgsql-7.1.28','php-curl-7.1.28','php-intl-7.1.28','php-pdo_pgsql-7.1.28']
     state: present
+
+- name: Install required python modules
+  pip:
+    name: psycopg2
+    executable: pip3.6
 
 - name: Template out login.conf
   template:
@@ -43,61 +54,6 @@
     state: present
     reload: yes
 
-- name: Install required python modules
-  pip:
-    name: psycopg2
-    executable: pip3.6
-
-# This part still is asking for the password when running the playbook
-- name: Initialize postgresql
-  shell: echo -e "root11\nroot11" | initdb -D /var/postgresql/data -U postgres -A trust -W
-  args:
-    creates: /var/postgresql/data
-  become: yes
-  become_user: _postgresql
-  become_method: su
-
-- name: Start postgresql
-  service:
-    name: postgresql
-    state: started
-    enabled: yes
-
-- name: Create zabbix user, set password, grant privs
-  postgresql_user:
-    name: zabbix
-    password: zabbix
-    role_attr_flags: CREATEDB,NOSUPERUSER,NOCREATEROLE
-  become: yes
-  become_user: _postgresql
-  become_method: su
-
-- name: Create zabbix database
-  postgresql_db:
-    name: zabbix
-    owner: zabbix
-  become: yes
-  become_user: _postgresql
-  become_method: su
-    
-- name: Initialize schema
-  shell: cat /usr/local/share/zabbix/schema/postgresql/schema.sql | psql -U zabbix zabbix
-  become: yes
-  become_user: _postgresql
-  become_method: su
-  
-- name: Initialize images
-  shell: cat /usr/local/share/zabbix/schema/postgresql/images.sql | psql -U zabbix zabbix
-  become: yes
-  become_user: _postgresql
-  become_method: su
-  
-- name: Initialize data
-  shell: cat /usr/local/share/zabbix/schema/postgresql/data.sql | psql -U zabbix zabbix
-  become: yes
-  become_user: _postgresql
-  become_method: su
-
 - name: Add DBPassword into zabbix_server.conf
   lineinfile:
     path: /etc/zabbix/zabbix_server.conf
@@ -105,20 +61,10 @@
     line: DBPassword=zabbix
 
 - name: Copy over php modules
-  shell: cp /etc/php-7.1.sample/* /etc/php-7.1/
+  copy:
+    src: /etc/php-7.1.sample/
+    dest: /etc/php-7.1/
 
-- name: Start zabbix_server
-  service:
-    name: zabbix_server
-    state: started
-    enabled: yes
-
-- name: Start php service
-  service: 
-    name: php71_fpm
-    state: started
-    enabled: yes
- 
 - name: Template out httpd.conf
   template:
     src: httpd.conf
@@ -135,14 +81,12 @@
     group: www
     mode: 0640
 
-- name: Start php71_fpm
-  service: 
-    name: php71_fpm
+- name: Start required services
+  service:
+    name: "{{ item }}"
     state: started
     enabled: yes
-
-- name: Start httpd
-  service: 
-    name: httpd
-    state: started
-    enabled: yes
+  with_items:
+    - zabbix_server
+    - php71_fpm
+    - httpd
