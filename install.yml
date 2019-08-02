@@ -15,5 +15,5 @@
     - { role: httpd_tls, tags: httpd_tls }
     - { role: desktop, tags: desktop }
     - { role: ethereum, tags: ethereum }
-    - { role: zabbix_server, tags: zabbix_server }
+    - { role: zabbix-web, tags: zabbix-web }
     - { role: reboot, tags: reboot }
