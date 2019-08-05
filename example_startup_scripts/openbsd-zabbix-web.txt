@@ -1,0 +1,16 @@
+#!/bin/sh
+
+admin_pass=password11
+
+# Zabbix server credentials
+export ZABBIX_USERNAME=zabbix
+export ZABBIX_PASSWORD=zabbix_pass
+
+# Download and install OpenBSD Zabbix Postgresql
+ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_zabbix_postgresql.sh | sh
+
+# Set admin password
+usermod -p $(encrypt $admin_pass) admin
+
+# Add public key to admin
+echo "ssh-rsa AAAAB3...zRD9H7xnv admin@server" >> /home/admin/.ssh/authorized_keys
