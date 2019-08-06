@@ -3,11 +3,11 @@
 global $DB, $HISTORY;
 
 $DB['TYPE']                             = 'POSTGRESQL';
-$DB['SERVER']                   = '127.0.0.1';
+$DB['SERVER']                   = '{{ zabbix_postgres_ip';
 $DB['PORT']                             = '5432';
 $DB['DATABASE']                 = 'zabbix';
-$DB['USER']                             = 'zabbix';
-$DB['PASSWORD']                 = 'zabbix';
+$DB['USER']                             = '{{ zabbix_username }}';
+$DB['PASSWORD']                 = '{{ zabbix_password }}';
 // Schema name. Used for IBM DB2 and PostgreSQL.
 $DB['SCHEMA']                   = '';
 
