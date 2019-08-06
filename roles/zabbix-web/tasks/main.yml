@@ -58,7 +58,7 @@
   lineinfile:
     path: /etc/zabbix/zabbix_server.conf
     regexp: '^DBPassword='
-    line: DBPassword=zabbix
+    line: "DBPassword={{ zabbix_password }}"
 
 - name: Copy over php modules
   copy:
