@@ -24,7 +24,7 @@
 
 - name: Remove password file
   file:
-    src: /etc/temp.pass
+    path: /etc/temp.pass
     state: absent
 
 - name: Start postgresql
