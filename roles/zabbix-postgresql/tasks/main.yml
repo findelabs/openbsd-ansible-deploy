@@ -1,0 +1,69 @@
+---
+- name: Install postgres and zabbix server (for config)
+  openbsd_pkg:
+    name: ['zabbix-server-4.0.0-pgsql','postgresql-server-11.2p1','py3-pip']
+    state: present
+
+- name: Install required python modules
+  pip:
+    name: psycopg2
+    executable: pip3.6
+
+- name: Create password file for postgres
+  copy:
+    content: "{{ zabbix_superuser_passwd }}"
+    dest: /etc/temp.pass
+
+- name: Initialize postgresql
+  shell: initdb -D /var/postgresql/data -U postgres -A trust --pwfile=/etc/temp.pass
+  args:
+    creates: /var/postgresql/data
+  become: yes
+  become_user: _postgresql
+  become_method: su
+
+- name: Remove password file
+  file:
+    src: /etc/temp.pass
+    state: absent
+
+- name: Start postgresql
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: Create zabbix user, set password, grant privs
+  postgresql_user:
+    name: "{{ zabbix_username }}"
+    password: "{{ zabbix_password }}"
+    role_attr_flags: CREATEDB,NOSUPERUSER,NOCREATEROLE
+  become: yes
+  become_user: _postgresql
+  become_method: su
+
+- name: Create zabbix database
+  postgresql_db:
+    name: "{{ zabbix_username }}"
+    password: "{{ zabbix_password }}"
+  become: yes
+  become_user: _postgresql
+  become_method: su
+    
+- name: Initialize schema
+  shell: cat /usr/local/share/zabbix/schema/postgresql/schema.sql | psql -U zabbix zabbix
+  become: yes
+  become_user: _postgresql
+  become_method: su
+  
+- name: Initialize images
+  shell: cat /usr/local/share/zabbix/schema/postgresql/images.sql | psql -U zabbix zabbix
+  become: yes
+  become_user: _postgresql
+  become_method: su
+  
+- name: Initialize data
+  shell: cat /usr/local/share/zabbix/schema/postgresql/data.sql | psql -U zabbix zabbix
+  become: yes
+  become_user: _postgresql
+  become_method: su
