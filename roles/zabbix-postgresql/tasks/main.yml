@@ -44,8 +44,7 @@
 
 - name: Create zabbix database
   postgresql_db:
-    name: "{{ zabbix_username }}"
-    password: "{{ zabbix_password }}"
+    name: "zabbix"
   become: yes
   become_user: _postgresql
   become_method: su
