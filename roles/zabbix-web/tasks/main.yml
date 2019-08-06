@@ -14,13 +14,8 @@
 
 - name: Install zabbix server
   openbsd_pkg:
-    name: ['zabbix-server-4.0.0-pgsql','zabbix-web-4.0.0p0','py3-pip','php-pgsql-7.1.28','php-curl-7.1.28','php-intl-7.1.28','php-pdo_pgsql-7.1.28']
+    name: ['zabbix-server-4.0.0-pgsql','zabbix-web-4.0.0p0','php-pgsql-7.1.28','php-curl-7.1.28','php-intl-7.1.28','php-pdo_pgsql-7.1.28']
     state: present
-
-- name: Install required python modules
-  pip:
-    name: psycopg2
-    executable: pip3.6
 
 - name: Template out login.conf
   template:
