@@ -54,6 +54,14 @@
     group: _postgresql
     mode: 0600
 
+- name: Update pg_hba.conf
+  template:
+    src: pg_hba.conf
+    dest: /var/postgresql/data/pg_hba.conf
+    owner: _postgresql
+    group: _postgresql
+    mode: 0600
+
 - name: Start postgresql
   service:
     name: postgresql
