@@ -1,4 +1,13 @@
 ---
+- name: If local network ip or secondary interface name is not defined, fail
+  fail:
+    msg: "{{ item }} is not defined"
+  when:
+    - item is not defined
+  with_items:
+    - local_network_ip
+    - local_network_interface
+
 - name: Install postgres and zabbix server (for config)
   openbsd_pkg:
     name: ['zabbix-server-4.0.0-pgsql','postgresql-server-11.2p1','py3-pip']
@@ -8,6 +17,16 @@
   pip:
     name: psycopg2
     executable: pip3.6
+
+- name: Create local network interface config
+  copy:
+    content: "up {{ local_network_ip }} 255.255.255.0"
+    dest: "/etc/hostname.{{ local_network_interface }}"
+
+- name: Bring up interface
+  command: "sh /etc/netstart {{ local_network_interface }}"
+  changed_when: false
+  failed_when: false
 
 - name: Create password file for postgres
   copy:
