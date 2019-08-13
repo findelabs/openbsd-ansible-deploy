@@ -46,6 +46,14 @@
     path: /etc/temp.pass
     state: absent
 
+- name: Update postgres config to listen on local interface
+  template:
+    src: postgresql.conf
+    dest: /var/postgresql/data/postgresql.conf
+    owner: _postgresql
+    group: _postgresql
+    mode: 0600
+
 - name: Start postgresql
   service:
     name: postgresql
