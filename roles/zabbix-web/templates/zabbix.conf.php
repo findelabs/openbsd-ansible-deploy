@@ -3,7 +3,7 @@
 global $DB, $HISTORY;
 
 $DB['TYPE']                             = 'POSTGRESQL';
-$DB['SERVER']                   = '{{ zabbix_postgres_ip';
+$DB['SERVER']                   = '{{ zabbix_postgres_ip }}';
 $DB['PORT']                             = '5432';
 $DB['DATABASE']                 = 'zabbix';
 $DB['USER']                             = '{{ zabbix_username }}';
