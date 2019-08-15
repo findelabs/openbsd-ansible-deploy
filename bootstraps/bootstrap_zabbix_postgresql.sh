@@ -7,11 +7,11 @@ then
     exit 1
 fi
 
-if [[ $zabbix_network_ip == "" ]] || [[ $zabbix_network_interface == "" ]]
+if [[ $local_network_ip == "" ]] || [[ $local_network_interface == "" ]]
 then
-    echo "Please set vars for both zabbix_network_ip and zabbix_network_interface"
+    echo "Please set vars for both local_network_ip and local_network_interface"
     exit 1
 fi
 
 # Run playbook
-cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,unbound,zabbix-postgresql --extra-vars="zabbix_username=$ZABBIX_USERNAME zabbix_password=$ZABBIX_PASSWORD zabbix_network_ip=$zabbix_network_ip zabbix_network_interface=$zabbix_network_interface unbound_address=127.0.0.1"
+cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,unbound,zabbix-postgresql --extra-vars="zabbix_username=$ZABBIX_USERNAME zabbix_password=$ZABBIX_PASSWORD local_network_ip=$local_network_ip local_network_interface=$local_network_interface unbound_address=127.0.0.1"
