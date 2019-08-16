@@ -54,6 +54,16 @@
     src: /etc/php-7.1.sample/
     dest: /etc/php-7.1/
 
+- name: Create local network interface config
+  copy:
+    content: "up {{ local_network_ip }} 255.255.255.0"
+    dest: "/etc/hostname.{{ local_network_interface }}"
+
+- name: Bring up interface
+  command: "sh /etc/netstart {{ local_network_interface }}"
+  changed_when: false
+  failed_when: false
+
 - name: Template out zabbix_server.conf
   template:
     src: zabbix_server.conf
