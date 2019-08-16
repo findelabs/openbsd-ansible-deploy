@@ -49,16 +49,18 @@
     state: present
     reload: yes
 
-- name: Add DBPassword into zabbix_server.conf
-  lineinfile:
-    path: /etc/zabbix/zabbix_server.conf
-    regexp: '^DBPassword='
-    line: "DBPassword={{ zabbix_password }}"
-
 - name: Copy over php modules
   copy:
     src: /etc/php-7.1.sample/
     dest: /etc/php-7.1/
+
+- name: Template out zabbix_server.conf
+  template:
+    src: zabbix_server.conf
+    dest: /etc/zabbix/zabbix_server.conf
+    owner: root
+    group: zabbix
+    mode: 0640
 
 - name: Template out httpd.conf
   template:
