@@ -1,8 +1,8 @@
 # Bootstrap the system
 ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_raw.sh | sh
 
-if [[ $USERNAME == "" ]] || [[ $PASSWORD == "" ]] || [[ $PSK == "" ]] || [[ $GMAIL_ACCOUNT == "" ]] || [[ $GMAIL_SECRET == "" ]]; then
-    echo "Please set vars for USERNAME, PASSWORD, and PSK"
+if [[ $zabbix_username == "" ]] || [[ $zabbix_password == "" ]]; then
+    echo "Please set vars for zabbix_username and zabbix_password"
     exit 1
 fi
 
@@ -13,4 +13,4 @@ then
 fi
 
 # Run playbook
-cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,vnstatd,unbound,sysctl_router,zabbix-web --extra-vars="user=$USERNAME pass=$PASSWORD psk=$PSK unbound_address=10.0.0.1 vnstatd_interface=tun0 gmail_account=$GMAIL_ACCOUNT gmail_secret=$GMAIL_SECRET local_network_ip=$local_network_ip local_network_interface=$local_network_interface"
+cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,vnstatd,unbound,sysctl_router,zabbix-web --extra-vars="zabbix_username=$zabbix_username zabbix_password=$zabbix_password unbound_address=127.0.0.1 local_network_ip=$local_network_ip local_network_interface=$local_network_interface"
