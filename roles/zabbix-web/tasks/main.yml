@@ -59,7 +59,7 @@
     src: zabbix_server.conf
     dest: /etc/zabbix/zabbix_server.conf
     owner: root
-    group: zabbix
+    group: _zabbix
     mode: 0640
 
 - name: Template out httpd.conf
