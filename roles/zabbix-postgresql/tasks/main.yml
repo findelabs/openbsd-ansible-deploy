@@ -20,7 +20,7 @@
 
 - name: Create local network interface config
   copy:
-    content: "up {{ local_network_ip }} 255.255.255.0"
+    content: "up {{ local_network_ip }} 255.255.240.0"
     dest: "/etc/hostname.{{ local_network_interface }}"
 
 - name: Bring up interface
