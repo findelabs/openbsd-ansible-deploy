@@ -88,6 +88,12 @@
     group: www
     mode: 0640
 
+- name: Update timezone info in /etc/php-7.1.ini
+  lineinfile:
+    path: /etc/php-7.1.ini
+    regexp: '^date.timezone'
+    line: 'date.timezone = America/Chicago'
+
 - name: Start required services
   service:
     name: "{{ item }}"
