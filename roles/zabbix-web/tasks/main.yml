@@ -52,7 +52,7 @@
 
 - name: Configure sysctl kern.shminfo.shmall
   sysctl:
-    name: sysctl kern.shminfo.shmall
+    name: kern.shminfo.shmall
     value: 524288
     sysctl_set: yes
     state: present
