@@ -12,6 +12,15 @@
     - postgres_install_check.rc == 1
     - zabbix_postgres_ip is not defined
 
+- name: Fail if zabbix_user or zabbix_password is not defined
+  fail:
+    msg: "{{ item }} is not defined"
+  when:
+    - item is not defined
+  with_items: 
+    - zabbix_user
+    - zabbix_password
+
 - name: Install zabbix server
   openbsd_pkg:
     name: ['zabbix-server-4.0.0-pgsql','zabbix-web-4.0.0p0','php-pgsql-7.1.28','php-curl-7.1.28','php-intl-7.1.28','php-pdo_pgsql-7.1.28']
