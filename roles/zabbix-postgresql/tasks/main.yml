@@ -1,5 +1,5 @@
 ---
-- name: If local network ip or secondary interface name is not defined, fail
+- name: Fail if required vars are missing
   fail:
     msg: "{{ item }} is not defined"
   when:
@@ -7,6 +7,8 @@
   with_items:
     - local_network_ip
     - local_network_interface
+    - zabbix_user
+    - zabbix_password
 
 - name: Install postgres and zabbix server (for config)
   openbsd_pkg:
