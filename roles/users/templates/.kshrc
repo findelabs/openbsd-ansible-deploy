@@ -100,7 +100,7 @@ function console {
     doas cu -l /dev/cuaU0
 }
 
-function gp() {
+function gp {
     branch=$(git branch | grep '\*' | awk '{print $NF}')
     git push origin $branch 
 }
