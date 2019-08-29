@@ -35,7 +35,6 @@ alias cp="cp -i"
 alias vir="vi -R"
 alias gs="git status"
 alias gd="git diff"
-alias gp="git push origin master"
 alias vi="vim"
 alias rm="rm -i"
 alias df='df -h'
@@ -101,3 +100,7 @@ function console {
     doas cu -l /dev/cuaU0
 }
 
+function gp() {
+    branch=$(git branch | grep '\*' | awk '{print $NF}')
+    git push origin $branch 
+}
