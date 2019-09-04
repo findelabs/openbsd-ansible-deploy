@@ -11,13 +11,11 @@
     owner: admin
     group: www
 
-- name: Add aria function to .kshrc
+- name: Add aria alias to .kshrc
   blockinfile:
     path: /home/admin/.kshrc
     block: |
-        function aria {
-            aria2c -d /var/www/htdocs/data -V -u 5 --seed-time=0 \$@
-        }
+        aria='aria2c -d /var/www/htdocs/data -V -u 5 --seed-time=0'
 
 - name: Template out httpd.conf
   template: 
