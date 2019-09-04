@@ -1,6 +1,6 @@
 - name: Install required packages
   openbsd_pkg:
-    name: ['aria']
+    name: ['aria2']
     state: present
 
 - name: Create www data directory
