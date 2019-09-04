@@ -1,0 +1,33 @@
+- name: Install required packages
+  openbsd_pkg:
+    name: ['aria2c']
+    state: present
+
+- name: Create www data directory
+  file:
+    path: /var/www/htdocs/data
+    state: directory
+    mode: 0755
+    owner: admin
+    group: www
+
+- name: Add aria function to .kshrc
+  blockinfile:
+    path: /home/admin/.kshrc
+    block: |
+        function aria {
+            aria2c -d /var/www/htdocs/data -V -u 5 --seed-time=0 \$@
+        }
+
+- name: Template out httpd.conf
+  template: 
+    src: httpd.conf
+    dest: /etc/httpd.conf
+    owner: root
+    group: root
+
+- name: Start and enable httpd
+  service:
+    name: httpd
+    state: started
+    enabled: true
