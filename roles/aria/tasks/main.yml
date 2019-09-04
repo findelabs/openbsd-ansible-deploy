@@ -24,7 +24,7 @@
     src: httpd.conf
     dest: /etc/httpd.conf
     owner: root
-    group: root
+    group: wheel
 
 - name: Start and enable httpd
   service:
