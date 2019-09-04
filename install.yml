@@ -17,4 +17,5 @@
     - { role: ethereum, tags: ethereum }
     - { role: zabbix-postgresql, tags: zabbix-postgresql }
     - { role: zabbix-web, tags: zabbix-web }
+    - { role: aria, tags: aria }
     - { role: reboot, tags: reboot }
