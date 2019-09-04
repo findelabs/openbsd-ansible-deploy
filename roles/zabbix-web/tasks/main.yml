@@ -1,0 +1,114 @@
+---
+- name: Check for postgres installation
+  command: command -v postgres
+  changed_when: false
+  failed_when: false
+  register: postgres_install_check
+
+- name: If zabbis_postgres_ip is not defined, and postgres is not already installed, fail
+  fail:
+    msg: zabbix_postgres_ip is not defined, and postgres is not installed on this host
+  when:
+    - postgres_install_check.rc == 1
+    - zabbix_postgres_ip is not defined
+
+- name: Fail if zabbix_user or zabbix_password is not defined
+  fail:
+    msg: "{{ item }} is not defined"
+  when:
+    - item is not defined
+  with_items: 
+    - zabbix_user
+    - zabbix_password
+
+- name: Install zabbix server
+  openbsd_pkg:
+    name: ['zabbix-server-4.0.0-pgsql','zabbix-web-4.0.0p0','php-pgsql-7.1.28','php-curl-7.1.28','php-intl-7.1.28','php-pdo_pgsql-7.1.28']
+    state: present
+
+- name: Template out login.conf
+  template:
+    src: login.conf
+    dest: /etc/login.conf
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: Configure sysctl kern.seminfo.semmni
+  sysctl:
+    name: kern.seminfo.semmni
+    value: 30
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Configure sysctl kern.seminfo.semmns
+  sysctl:
+    name: kern.seminfo.semmns
+    value: 120
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Configure sysctl kern.shminfo.shmall
+  sysctl:
+    name: kern.shminfo.shmall
+    value: 524288
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Copy over php modules
+  copy:
+    src: /etc/php-7.1.sample/
+    dest: /etc/php-7.1/
+
+- name: Create local network interface config
+  copy:
+    content: "up {{ local_network_ip }} 255.255.240.0"
+    dest: "/etc/hostname.{{ local_network_interface }}"
+
+- name: Bring up interface
+  command: "sh /etc/netstart {{ local_network_interface }}"
+  changed_when: false
+  failed_when: false
+
+- name: Template out zabbix_server.conf
+  template:
+    src: zabbix_server.conf
+    dest: /etc/zabbix/zabbix_server.conf
+    owner: root
+    group: _zabbix
+    mode: 0640
+
+- name: Template out httpd.conf
+  template:
+    src: httpd.conf
+    dest: /etc/httpd.conf
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: Template out zabbix.conf.php
+  template:
+    src: zabbix.conf.php
+    dest: /var/www/zabbix/conf/zabbix.conf.php
+    owner: root
+    group: www
+    mode: 0640
+
+- name: Update timezone info in /etc/php-7.1.ini
+  lineinfile:
+    path: /etc/php-7.1.ini
+    regexp: '^date.timezone'
+    line: 'date.timezone = America/Chicago'
+
+- name: Start required services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - zabbix_server
+    - php71_fpm
+    - httpd

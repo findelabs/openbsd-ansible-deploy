@@ -1,0 +1,3 @@
+zabbix_superuser_passwd: "rootpassword"
+zabbix_username: "zabbix"
+zabbix_password: "zabbix"

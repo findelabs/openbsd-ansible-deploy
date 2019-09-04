@@ -1,0 +1,105 @@
+---
+- name: Fail if required vars are missing
+  fail:
+    msg: "{{ item }} is not defined"
+  when:
+    - item is not defined
+  with_items:
+    - local_network_ip
+    - local_network_interface
+    - zabbix_user
+    - zabbix_password
+
+- name: Install postgres and zabbix server (for config)
+  openbsd_pkg:
+    name: ['zabbix-server-4.0.0-pgsql','postgresql-server-11.2p1','py3-pip']
+    state: present
+
+- name: Install required python modules
+  pip:
+    name: psycopg2
+    executable: pip3.6
+
+- name: Create local network interface config
+  copy:
+    content: "up {{ local_network_ip }} 255.255.240.0"
+    dest: "/etc/hostname.{{ local_network_interface }}"
+
+- name: Bring up interface
+  command: "sh /etc/netstart {{ local_network_interface }}"
+  changed_when: false
+  failed_when: false
+
+- name: Create password file for postgres
+  copy:
+    content: "{{ zabbix_superuser_passwd }}"
+    dest: /etc/temp.pass
+
+- name: Initialize postgresql
+  shell: initdb -D /var/postgresql/data -U postgres -A trust --pwfile=/etc/temp.pass
+  args:
+    creates: /var/postgresql/data
+  become: yes
+  become_user: _postgresql
+  become_method: su
+
+- name: Remove password file
+  file:
+    path: /etc/temp.pass
+    state: absent
+
+- name: Update postgres config to listen on local interface
+  template:
+    src: postgresql.conf
+    dest: /var/postgresql/data/postgresql.conf
+    owner: _postgresql
+    group: _postgresql
+    mode: 0600
+
+- name: Update pg_hba.conf
+  template:
+    src: pg_hba.conf
+    dest: /var/postgresql/data/pg_hba.conf
+    owner: _postgresql
+    group: _postgresql
+    mode: 0600
+
+- name: Start postgresql
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: Create zabbix user, set password, grant privs
+  postgresql_user:
+    name: "{{ zabbix_username }}"
+    password: "{{ zabbix_password }}"
+    role_attr_flags: CREATEDB,NOSUPERUSER,NOCREATEROLE
+  become: yes
+  become_user: _postgresql
+  become_method: su
+
+- name: Create zabbix database
+  postgresql_db:
+    name: "zabbix"
+  become: yes
+  become_user: _postgresql
+  become_method: su
+    
+- name: Initialize schema
+  shell: cat /usr/local/share/zabbix/schema/postgresql/schema.sql | psql -U zabbix zabbix
+  become: yes
+  become_user: _postgresql
+  become_method: su
+  
+- name: Initialize images
+  shell: cat /usr/local/share/zabbix/schema/postgresql/images.sql | psql -U zabbix zabbix
+  become: yes
+  become_user: _postgresql
+  become_method: su
+  
+- name: Initialize data
+  shell: cat /usr/local/share/zabbix/schema/postgresql/data.sql | psql -U zabbix zabbix
+  become: yes
+  become_user: _postgresql
+  become_method: su
