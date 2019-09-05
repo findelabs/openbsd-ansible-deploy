@@ -17,6 +17,16 @@
     block: |
         aria='aria2c -d /var/www/htdocs/data -V -u 5 --seed-time=0'
 
+        function get_links {
+            for folder in $(ls /var/www/htdocs/data)
+            do
+                for file in $(ls /var/www/htdocs/data/$folder)
+                do
+                    echo http://$(ifconfig egress | grep inet | awk '{print $2}')/${folder}$file
+                done
+            done
+        }
+
 - name: Template out httpd.conf
   template: 
     src: httpd.conf
