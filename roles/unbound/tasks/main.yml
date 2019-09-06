@@ -1,4 +1,12 @@
 ---
+- name: Fail if unbound_address is not defined
+  fail:
+    msg: "{{ item }} is not defined, this is needed to determine proper bind IP"
+  when:
+    - item is not defined
+  with_items:
+    - unbound_address
+
 - name: Deploy unbound config
   template:
     src: unbound.conf.j2
