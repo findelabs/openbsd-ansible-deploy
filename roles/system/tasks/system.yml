@@ -37,7 +37,7 @@
     owner: root 
     group: operator 
     mode: 0644
-    force: no
+    force: yes
 
 - name: Deploy /etc/doas.conf
   template:
