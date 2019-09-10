@@ -1,4 +1,12 @@
 ---
+- name: Fail if unbound_address is not defined
+  fail:
+    msg: "{{ item }} is not defined, this is needed to determine proper bind IP"
+  when:
+    - item is not defined
+  with_items:
+    - unbound_address
+
 - name: Deploy unbound config
   template:
     src: unbound.conf.j2
@@ -45,6 +53,12 @@
   failed_when: createrootkey.rc == 2
   notify:
     - restart unbound
+
+- name: Create unbound control certs
+  shell: unbound-control-setup
+  args:
+    creates: /var/unbound/etc/unbound_control.key
+  changed_when: false
 
 - name: Ensure unbound is started and enabled
   service:

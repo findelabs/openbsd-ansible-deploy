@@ -31,6 +31,15 @@ server:
    rrset-cache-size: 256m
    msg-cache-size: 256m
 
+remote-control:
+    control-enable: yes                         # set up the keys and certificates with unbound-control-setup.
+    control-interface: 127.0.0.1                # what interfaces are listened to for remote control.
+    control-port: 8953                          # port number for remote control operations.
+    server-key-file: "/var/unbound/etc/unbound_server.key"
+    server-cert-file: "/var/unbound/etc/unbound_server.pem"
+    control-key-file: "/var/unbound/etc/unbound_control.key"
+    control-cert-file: "/var/unbound/etc/unbound_control.pem"
+
  forward-zone:                  
       name: "."                
       forward-tls-upstream: yes
