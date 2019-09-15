@@ -35,6 +35,8 @@
             :openfiles-cur=512:\
             :openfiles-max=1024:\
             :tc=daemon:
+  notify:
+    - restart dovecot
 
 - name: Create dkim private key
   shell: openssl genrsa -out /etc/ssl/private/dkim.key 1024
