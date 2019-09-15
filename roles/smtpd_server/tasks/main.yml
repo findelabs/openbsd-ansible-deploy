@@ -63,7 +63,7 @@
     owner: root
     group: wheel
     mode: 0644
-  handlers:
+  notify:
     - restart smtpd
 
 - name: Set permissions for /var/mail to allow dovecot to create emails under subdirectories
@@ -88,7 +88,7 @@
     owner: root
     group: wheel
     mode: 0644
-  handlers:
+  notify:
     - restart dovecot
 
 - name: "Template out dovecot config {{ item }}"
@@ -103,14 +103,14 @@
     - 10-mail.conf
     - 10-ssl.conf
     - 15-mailboxes.conf
-  handlers:
+  notify:
     - restart dovecot
 
 - name: Create mailname file
   copy: 
     content="{{ domain}}.com" 
     dest=/etc/mail/mailname
-  handlers:
+  notify:
     - restart dovecot
     - restart smtpd
 
