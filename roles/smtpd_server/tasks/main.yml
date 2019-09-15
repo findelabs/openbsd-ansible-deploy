@@ -26,10 +26,10 @@
 
 - name: Create dkim private key
   shell: openssl genrsa -out /etc/ssl/private/dkim.key 1024
-  creates: /etc/ssl/private/dkim.key
+  changed_when: true
   failed_when: false
   args:
-    changed_when: true
+    creates: /etc/ssl/private/dkim.key
 
 - name: Create dkim public key
   shell: openssl rsa -in /etc/ssl/private/dkim.key -pubout -out /etc/ssl/dkim_public.key
