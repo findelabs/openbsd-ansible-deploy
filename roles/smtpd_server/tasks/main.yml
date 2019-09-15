@@ -24,7 +24,7 @@
     - httpd.conf
     - acme-client.conf
 
-- name: Configure dovecot's login resources:
+- name: Configure dovecot's login resources
   blockinfile:
     path: /etc/login.conf
     block: |
