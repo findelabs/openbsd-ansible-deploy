@@ -60,6 +60,7 @@
   template:
     src: "{{ item }}"
     dest: "/etc/mail/{{ item }}"
+    force: no
   with_items:
     - users
     - domains
