@@ -50,6 +50,11 @@
   args:
     creates: /etc/ssl/dkim_public.key
 
+- name: Change permissions on /etc/ssl/private slightly, this may have to change in the future
+  file:
+    path: /etc/ssl/private
+    mode: 0701
+
 - name: Create acme-client keys
   shell: "acme-client -ADv {{ domain }}"
   failed_when: false
