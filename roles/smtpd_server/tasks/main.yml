@@ -24,6 +24,18 @@
     - httpd.conf
     - acme-client.conf
 
+- name: Configure dovecot's login resources:
+  blockinfile:
+    path: /etc/login.conf
+    block: |
+        #
+        # DoveCot
+        #
+        dovecot:\
+            :openfiles-cur=512:\
+            :openfiles-max=1024:\
+            :tc=daemon:
+
 - name: Create dkim private key
   shell: openssl genrsa -out /etc/ssl/private/dkim.key 1024
   failed_when: false
@@ -91,7 +103,7 @@
   notify:
     - restart dovecot
 
-- name: "Template out dovecot config {{ item }}"
+- name: Template out dovecot configs
   template:
     src: "{{ item }}"
     dest: "/etc/dovecot/conf.d/{{ item }}"
