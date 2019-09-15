@@ -18,4 +18,5 @@
     - { role: zabbix-postgresql, tags: zabbix-postgresql }
     - { role: zabbix-web, tags: zabbix-web }
     - { role: aria, tags: aria }
+    - { role: smtpd_server, tags: smtpd_server }
     - { role: reboot, tags: reboot }
