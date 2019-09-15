@@ -3,7 +3,7 @@
   fail:
     msg: "Missing required var {{ item }}"
   when:
-    - var[item] is not defined
+    - vars[item] is not defined
   with_items:
     - domain
 

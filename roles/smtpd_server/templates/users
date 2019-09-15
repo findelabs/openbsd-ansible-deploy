@@ -1,2 +1,2 @@
-admin@{{ domains }}.com admin
-@{{ domains }}.com admin
+admin@{{ domain }}.com admin
+@{{ domain }}.com admin
