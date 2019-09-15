@@ -93,13 +93,13 @@
     group: _dovecot
     mode: 0775
 
-- name: Create /var/mail/dovecot directory for storing emails
-  file:
-    path: /var/mail/dovecot
-    state: directory
-    owner: root
-    group: _dovecot
-    mode: 0775
+#- name: Create /var/mail/dovecot directory for storing emails
+#  file:
+#    path: /var/mail/dovecot
+#    state: directory
+#    owner: root
+#    group: _dovecot
+#    mode: 0775
 
 - name: Template dovecot.conf
   template:
