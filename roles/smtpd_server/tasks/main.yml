@@ -12,7 +12,7 @@
     name: ['dkimproxy','dovecot']
     state: present
 
-- name: "Template out {{ item }}"
+- name: Template out /etc configs
   template:
     src: "{{ item }}"
     dest: "/etc/{{ item }}"
@@ -63,6 +63,8 @@
     owner: root
     group: wheel
     mode: 0644
+  handlers:
+    - restart smtpd
 
 - name: Set permissions for /var/mail to allow dovecot to create emails under subdirectories
   file:
@@ -86,6 +88,8 @@
     owner: root
     group: wheel
     mode: 0644
+  handlers:
+    - restart dovecot
 
 - name: "Template out dovecot config {{ item }}"
   template:
@@ -99,9 +103,24 @@
     - 10-mail.conf
     - 10-ssl.conf
     - 15-mailboxes.conf
+  handlers:
+    - restart dovecot
 
 - name: Create mailname file
   copy: 
     content="{{ domain}}.com" 
     dest=/etc/mail/mailname
+  handlers:
+    - restart dovecot
+    - restart smtpd
+
+- name: Start and enabled required services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  with_items:
+    - smtpd
+    - dovecot
+    - dkimproxy_out
 
