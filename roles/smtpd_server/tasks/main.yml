@@ -136,6 +136,12 @@
     group: wheel
     mode: 755
 
+- name: Enable cronjob for bgp spam
+  cron:
+    name: "run bgp checkin"
+    minute: "*/15"
+    job: "/usr/local/sbin/bgp-spamd.black.sh"
+
 - name: Start and enabled required services
   service:
     name: "{{ item }}"
@@ -145,3 +151,5 @@
     - smtpd
     - dovecot
     - dkimproxy_out
+    - bgpd
+    - spamd
