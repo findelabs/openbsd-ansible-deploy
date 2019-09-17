@@ -23,6 +23,7 @@
     - pf.conf
     - httpd.conf
     - acme-client.conf
+    - bgpd.conf
 
 - name: Configure dovecot's login resources
   blockinfile:
@@ -69,6 +70,7 @@
   with_items:
     - users
     - domains
+    - spamd.conf
 
 - name: Create aliases.db
   shell: newaliases
@@ -92,14 +94,6 @@
     owner: root
     group: _dovecot
     mode: 0775
-
-#- name: Create /var/mail/dovecot directory for storing emails
-#  file:
-#    path: /var/mail/dovecot
-#    state: directory
-#    owner: root
-#    group: _dovecot
-#    mode: 0775
 
 - name: Template dovecot.conf
   template:
@@ -134,6 +128,14 @@
     - restart dovecot
     - restart smtpd
 
+- name: Copy out bgp-spamd.black.sh for spamd
+  template:
+    src: bgp-spamd.black.sh
+    dest: /usr/local/sbin/
+    owner: root
+    group: wheel
+    mode: 755
+
 - name: Start and enabled required services
   service:
     name: "{{ item }}"
@@ -143,4 +145,3 @@
     - smtpd
     - dovecot
     - dkimproxy_out
-
