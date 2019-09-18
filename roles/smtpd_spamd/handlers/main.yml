@@ -1,0 +1,14 @@
+- name: restart smtpd
+  service:
+    name: smtpd
+    state: restarted
+
+- name: restart dovecot
+  service:
+    name: dovecot
+    state: restarted
+
+- name: restart dkimproxy_out
+  service:
+    name: dkimproxy_out
+    state: restarted

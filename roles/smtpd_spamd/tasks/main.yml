@@ -1,0 +1,155 @@
+---
+- name: Fail if required vars are absent
+  fail:
+    msg: "Missing required var {{ item }}"
+  when:
+    - vars[item] is not defined
+  with_items:
+    - domain
+
+- name: Install required packages
+  openbsd_pkg:
+    name: ['dkimproxy','dovecot']
+    state: present
+
+- name: Template out /etc configs
+  template:
+    src: "{{ item }}"
+    dest: "/etc/{{ item }}"
+    owner: root
+    group: wheel
+    mode: 0660
+  with_items:
+    - pf.conf
+    - httpd.conf
+    - acme-client.conf
+    - bgpd.conf
+
+- name: Configure dovecot's login resources
+  blockinfile:
+    path: /etc/login.conf
+    block: |
+        #
+        # DoveCot
+        #
+        dovecot:\
+            :openfiles-cur=512:\
+            :openfiles-max=1024:\
+            :tc=daemon:
+  notify:
+    - restart dovecot
+
+- name: Create dkim private key
+  shell: openssl genrsa -out /etc/ssl/private/dkim.key 1024
+  failed_when: false
+  args:
+    creates: /etc/ssl/private/dkim.key
+
+- name: Create dkim public key
+  shell: openssl rsa -in /etc/ssl/private/dkim.key -pubout -out /etc/ssl/dkim_public.key
+  failed_when: false
+  args:
+    creates: /etc/ssl/dkim_public.key
+
+- name: Change permissions on /etc/ssl/private slightly, this may have to change in the future
+  file:
+    path: /etc/ssl/private
+    mode: 0701
+
+- name: Create acme-client keys
+  shell: "acme-client -ADv {{ domain }}"
+  failed_when: false
+  args:
+    creates: "/etc/ssl/private/mail.{{ domain }}.com.key"
+  
+- name: Create users and domains files
+  template:
+    src: "{{ item }}"
+    dest: "/etc/mail/{{ item }}"
+    force: no
+  with_items:
+    - users
+    - domains
+    - spamd.conf
+
+- name: Create aliases.db
+  shell: newaliases
+  failed_when: false
+  args:
+    creates: /etc/mail/aliases.db
+  
+- name: Template out smtpd.conf
+  template:
+    src: smtpd.conf
+    dest: /etc/mail/smtpd.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  notify:
+    - restart smtpd
+
+- name: Set permissions for /var/mail to allow dovecot to create emails under subdirectories
+  file:
+    path: /var/mail
+    owner: root
+    group: _dovecot
+    mode: 0775
+
+- name: Template dovecot.conf
+  template:
+    src: dovecot.conf
+    dest: /etc/dovecot/dovecot.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  notify:
+    - restart dovecot
+
+- name: Template out dovecot configs
+  template:
+    src: "{{ item }}"
+    dest: "/etc/dovecot/conf.d/{{ item }}"
+    owner: root
+    group: wheel
+    mode: 0600
+  with_items:
+    - 10-auth.conf
+    - 10-mail.conf
+    - 10-ssl.conf
+    - 15-mailboxes.conf
+  notify:
+    - restart dovecot
+
+- name: Create mailname file
+  copy: 
+    content="{{ domain}}.com" 
+    dest=/etc/mail/mailname
+  notify:
+    - restart dovecot
+    - restart smtpd
+
+- name: Copy out bgp-spamd.black.sh for spamd
+  template:
+    src: bgp-spamd.black.sh
+    dest: /usr/local/sbin/
+    owner: root
+    group: wheel
+    mode: 755
+
+- name: Enable cronjob for bgp spam
+  cron:
+    name: "run bgp checkin"
+    minute: "*/15"
+    job: "/usr/local/sbin/bgp-spamd.black.sh"
+
+- name: Start and enabled required services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  with_items:
+    - smtpd
+    - dovecot
+    - dkimproxy_out
+    - bgpd
+    - spamd
