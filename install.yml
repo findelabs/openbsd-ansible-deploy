@@ -19,4 +19,5 @@
     - { role: zabbix-web, tags: zabbix-web }
     - { role: aria, tags: aria }
     - { role: smtpd_spamd, tags: smtpd_spamd }
+    - { role: smtpd_rspamd, tags: smtpd_rspamd }
     - { role: reboot, tags: reboot }
