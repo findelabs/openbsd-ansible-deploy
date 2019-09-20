@@ -62,6 +62,11 @@ alias cp="cp -i"
 alias vir="vi -R"
 alias gs="git status"
 alias gd="git diff"
-alias gp="git push origin master"
+alias gpl="git pull"
 alias vi="vim"
 alias rm="rm -i"
+
+function gp {
+    branch=$(git branch | grep '\*' | awk '{print $NF}')
+    git push origin $branch
+}
