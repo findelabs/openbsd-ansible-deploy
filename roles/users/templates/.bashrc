@@ -63,7 +63,7 @@ alias vir="vi -R"
 alias gs="git status"
 alias gd="git diff"
 alias gpl="git pull"
-alias gb="git branch"
+alias gb="git branch | sed '/^$/d'"
 alias vi="vim"
 alias rm="rm -i"
 
