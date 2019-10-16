@@ -13,3 +13,6 @@ usermod -p $(encrypt $admin_pass) admin
 
 # Add public key to admin
 echo "ssh-rsa AAAAB3...zRD9H7xnv admin@server" >> /home/admin/.ssh/authorized_keys
+
+# reboot server
+reboot
