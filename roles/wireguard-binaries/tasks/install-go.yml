@@ -1,12 +1,12 @@
 ---
 - name: Check current binary packaged go version
-  shell: pkg_info -Q go | grep "^go-[0-9]" | cut -d- -f 2 | awk '{print $1}'
+  shell: ftp -o - http://ftp.openbsd.org/pub/OpenBSD/$(uname -r)/packages/$(uname -m)/ | awk -F\" '{print $2}' | grep -e "^go-[0-9]" | cut -d- -f 2 | awk -F. '{print $1"."$2"."$3}'  
   register: packaged_go_version
   ignore_errors: true
   changed_when: false
 
 - name: Find most current go version available from source
-  shell: ftp -v -o - https://golang.org/src/ | sed -E -n 's/.*goVersion = "go([0-9.]+)";.*/\1/p'
+  shell: ftp -o - https://golang.org/src/ | sed -E -n 's/.*goVersion = "go([0-9.]+)";.*/\1/p'
   register: current_go_version
   ignore_errors: true
   changed_when: false
