@@ -36,7 +36,7 @@ alias vir="vi -R"
 alias gs="git status"
 alias gd="git diff"
 alias gpl="git pull"
-alias gb="git branch"
+alias gb="git branch | sed '/^$/d'"
 alias vi="vim"
 alias rm="rm -i"
 alias df='df -h'
@@ -59,7 +59,7 @@ function getPWD {
 }
 
 function errata {
-    curl -s https://www.openbsd.org/errata64.html | grep FIX | awk -F\> '{print $2}' | awk -F\< '{print $1}'
+    curl -s https://www.openbsd.org/errata65.html | grep FIX | awk -F\> '{print $2}' | awk -F\< '{print $1}'
 }
 
 function upload {
