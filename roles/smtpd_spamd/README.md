@@ -2,4 +2,4 @@
 
 Required vars: domain, mail_subdomain
 
-Example: domain=findelabs.com, mail_subdomain=mail
+Example: domain=findelabs, mail_subdomain=mail
