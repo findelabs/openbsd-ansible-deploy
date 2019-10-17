@@ -60,7 +60,7 @@
   shell: "acme-client -ADv {{ domain }}"
   failed_when: false
   args:
-    creates: "/etc/ssl/private/mail.{{ domain }}.com.key"
+    creates: "/etc/ssl/private/{{ mail_subdomain }}.{{ domain }}.com.key"
   
 - name: Create users and domains files
   template:
