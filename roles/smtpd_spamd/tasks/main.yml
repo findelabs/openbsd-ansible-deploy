@@ -6,6 +6,7 @@
     - vars[item] is not defined
   with_items:
     - domain
+    - mail_subdomain
 
 - name: Install required packages
   openbsd_pkg:
