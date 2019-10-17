@@ -59,7 +59,8 @@
 
 - name: Create acme-client keys
   shell: "acme-client -ADv {{ domain }}"
-  failed_when: false
+  register: acmeclient
+  failed_when: acmeclient.rc != 0
   args:
     creates: "/etc/ssl/private/{{ mail_subdomain }}.{{ domain }}.com.key"
   
