@@ -58,7 +58,7 @@
     mode: 0701
 
 - name: Create acme-client keys
-  shell: "acme-client -ADv {{ domain }}"
+  shell: "acme-client -ADv {{ mail_subdomain }}.{{ domain }}.com"
   register: acmeclient
   failed_when: acmeclient.rc != 0
   args:
