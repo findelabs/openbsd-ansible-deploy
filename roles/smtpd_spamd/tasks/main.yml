@@ -107,6 +107,16 @@
   notify:
     - restart dovecot
 
+- name: Template dkimproxy_out.conf
+  template:
+    src: dkimproxy_out.conf
+    dest: /etc/dkimproxy_out.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  notify:
+    - restart dkimproxy_out
+
 - name: Template out dovecot configs
   template:
     src: "{{ item }}"
