@@ -1,0 +1,4 @@
+- name: Install wireguard packages
+  openbsd_pkg:
+    name: ['wireguard-go','wireguard-tools']
+    state: installed
