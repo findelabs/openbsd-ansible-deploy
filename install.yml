@@ -5,6 +5,7 @@
     - { role: system, tags: system }
     - { role: wireguard-pf, tags: wireguard-pf }
     - { role: wireguard-binaries, tags: wireguard-binaries }
+    - { role: wireguard-pkg, tags: wireguard-pkg }
     - { role: wireguard-configs, tags: wireguard-configs }
     - { role: l2tp-ipsec, tags: l2tp-ipsec }
     - { role: unbound, tags: unbound }
