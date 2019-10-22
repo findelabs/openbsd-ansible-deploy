@@ -39,7 +39,7 @@ done
 
 if [[ -n $client ]]; then
     if [[ -e $configs/client${client}.conf ]]; then
-        cat $configs/client${client}.conf | qrencode -t ansiutf8
+        cat $configs/client${client}.conf | qrencode -t ansi
         exit 0
     else
         echo "Client${client} does not exist"
