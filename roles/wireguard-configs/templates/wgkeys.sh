@@ -10,7 +10,7 @@ server_conf=$configs/server.conf
 #egress=$(ifconfig egress | grep inet | awk '{print $2}')
 
 # Testing for GCP, as external IP is masked
-egress=$(curl https://ipinfo.io/ip)
+egress=$(curl -s https://ipinfo.io/ip)
 dns=10.10.0.1
 port=9832
 conf_count=10
