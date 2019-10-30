@@ -1,3 +1,13 @@
+bootstrap_name="raw"
+bootstrap_log=/var/log/bootstrap
+
+# Check if bootstrap has already ran
+if [ "$(grep -c $bootstrap_name $bootstrap_log)" == "1" ]
+then
+    echo "bootstrap $bootstrap_name already complete"
+    exit
+fi
+
 # Setup installurl
 echo "http://ftp.openbsd.org/pub/OpenBSD/" > /etc/installurl
 
@@ -10,3 +20,6 @@ cd /root/git
 
 # Clone playbook
 git clone https://gitlab.com/Verticaleap/openbsd-ansible-dev.git
+
+# Add bootstrap to log
+echo $bootstrap_name >> $bootstrap_log

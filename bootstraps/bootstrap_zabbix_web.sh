@@ -1,3 +1,13 @@
+bootstrap_name="zabbix_web"
+bootstrap_log=/var/log/bootstrap
+
+# Check if bootstrap has already ran
+if [ "$(grep -c $bootstrap_name $bootstrap_log)" == "1" ]
+then
+    echo "bootstrap $bootstrap_name already complete"
+    exit
+fi
+
 # Bootstrap the system
 ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_raw.sh | sh
 
@@ -14,3 +24,6 @@ fi
 
 # Run playbook
 cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,vnstatd,unbound,sysctl_router,zabbix-web --extra-vars="zabbix_username=$zabbix_username zabbix_password=$zabbix_password unbound_address=127.0.0.1 local_network_ip=$local_network_ip local_network_interface=$local_network_interface zabbix_postgres_ip=$zabbix_postgres_ip"
+
+# Add bootstrap to log
+echo $bootstrap_name >> $bootstrap_log

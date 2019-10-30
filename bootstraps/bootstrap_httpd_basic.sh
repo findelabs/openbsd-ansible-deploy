@@ -1,3 +1,13 @@
+bootstrap_name="httpd_basic"
+bootstrap_log=/var/log/bootstrap
+
+# Check if bootstrap has already ran
+if [ "$(grep -c $bootstrap_name $bootstrap_log)" == "1" ]
+then
+    echo "bootstrap $bootstrap_name already complete"
+    exit
+fi
+
 # DOMAIN must be declared, so that httpd will be configured properly
 if [[ -z $DOMAIN ]]; then
     echo "DOMAIN must be declared"
@@ -13,3 +23,6 @@ sed -i.bak "s/ansible_domain.*/ansible_domain: $DOMAIN/g" all
 
 # Run playbook
 cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,httpd_basic,sysctl_router
+
+# Add bootstrap to log
+echo $bootstrap_name >> $bootstrap_log
