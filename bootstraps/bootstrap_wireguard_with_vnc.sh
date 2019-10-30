@@ -2,7 +2,7 @@ bootstrap_name="wireguard_vnc"
 bootstrap_log=/var/log/bootstrap
 
 # Check if bootstrap has already ran
-if [ "$(grep -c $bootstrap_name $bootstrap_log)" == "1" ]
+if [ "$(grep -sc $bootstrap_name $bootstrap_log)" == "1" ]
 then
     echo "bootstrap $bootstrap_name already complete"
     exit
