@@ -9,7 +9,7 @@ then
 fi
 
 # Bootstrap the system
-ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_raw.sh | sh
+ftp -V -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_raw.sh | sh
 
 if [[ $ZABBIX_USERNAME == "" ]] || [[ $ZABBIX_PASSWORD == "" ]]
 then

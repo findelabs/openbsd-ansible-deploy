@@ -15,7 +15,7 @@ if [[ -z $DOMAIN ]]; then
 fi
 
 # Bootstrap the system
-ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_raw.sh | sh
+ftp -V -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_raw.sh | sh
 
 # Set domain variable
 cd /root/git/openbsd-ansible-dev/group_vars
