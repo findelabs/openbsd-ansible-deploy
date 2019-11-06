@@ -40,22 +40,32 @@
   notify:
     - restart dovecot
 
+- name: create dkim ssl folder for dkimproxy_out
+  file:
+    path: /etc/ssl/dkim
+    state: directory
+    mode: 0740
+    owner: _dkimproxy
+    group: wheel
+
 - name: Create dkim private key
-  shell: openssl genrsa -out /etc/ssl/private/dkim.key 1024
+  shell: openssl genrsa -out /etc/ssl/dkim/dkim.key 1024
   failed_when: false
   args:
-    creates: /etc/ssl/private/dkim.key
+    creates: /etc/ssl/dkim/dkim.key
 
 - name: Create dkim public key
-  shell: openssl rsa -in /etc/ssl/private/dkim.key -pubout -out /etc/ssl/dkim_public.key
+  shell: openssl rsa -in /etc/ssl/dkim/dkim.key -pubout -out /etc/ssl/dkim_public.key
   failed_when: false
   args:
     creates: /etc/ssl/dkim_public.key
 
-- name: Change permissions on /etc/ssl/private slightly, this may have to change in the future
+- name: Change permissions on /etc/ssl/dkim/dkim.key slightly
   file:
-    path: /etc/ssl/private
-    mode: 0701
+    path: /etc/ssl/dkim/dkim.key
+    mode: 0700
+    user: _dkimproxy
+    group: wheel
 
 - name: Create acme-client keys
   shell: "acme-client -v {{ mail_subdomain }}.{{ domain }}.com"
