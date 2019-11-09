@@ -5,7 +5,7 @@ export DOMAIN=mydomain.com
 admin_pass=password11
 
 # Download and install OpenBSD httpd basic
-ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_httpd_basic.sh | sh
+ftp -o - https://github.com/Verticaleap/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_httpd_basic.sh | sh
 
 # Set admin password
 usermod -p $(encrypt $admin_pass) admin

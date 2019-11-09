@@ -9,11 +9,11 @@ extra_vars="\
 role_sysctl_task=router_sysctl"
 
 # Bootstrap the system
-ftp -V -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_raw.sh | sh
+ftp -V -o - https://github.com/Verticaleap/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
 
 # Set domain variable
-cd /root/git/openbsd-ansible-dev/group_vars
+cd /root/git/openbsd-ansible-deploy/group_vars
 sed -i.bak "s/ansible_domain.*/ansible_domain: $DOMAIN/g" all
 
 # Run playbook
-cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,httpd_basic,sysctl --extra-vars="$extra_vars"
+cd /root/git/openbsd-ansible-deploy/ && ansible-playbook install.yml --tags=users,system,httpd_basic,sysctl --extra-vars="$extra_vars"

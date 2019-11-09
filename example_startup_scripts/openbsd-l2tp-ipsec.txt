@@ -10,7 +10,7 @@ export GMAIL_ACCOUNT=myacct
 export GMAIL_SECRET=mypass
 
 # Download and install OpenBSD-Wireguard
-ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_l2tp-ipsec.sh | sh
+ftp -o - https://github.com/Verticaleap/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_l2tp-ipsec.sh | sh
 
 # Set admin password
 usermod -p $(encrypt $admin_pass) admin

@@ -3,7 +3,7 @@
 admin_pass=password11
 
 # Download and install OpenBSD-Wireguard
-ftp -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_wireguard.sh | sh
+ftp -o - https://github.com/Verticaleap/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_wireguard.sh | sh
 
 # Set admin password
 usermod -p $(encrypt $admin_pass) admin

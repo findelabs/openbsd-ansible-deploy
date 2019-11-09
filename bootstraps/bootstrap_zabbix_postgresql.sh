@@ -1,5 +1,5 @@
 # Bootstrap the system
-ftp -V -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_raw.sh | sh
+ftp -V -o - https://github.com/Verticaleap/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
 
 if [[ $ZABBIX_USERNAME == "" ]] || [[ $ZABBIX_PASSWORD == "" ]]
 then
@@ -14,4 +14,4 @@ then
 fi
 
 # Run playbook
-cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,unbound,zabbix-postgresql --extra-vars="zabbix_username=$ZABBIX_USERNAME zabbix_password=$ZABBIX_PASSWORD local_network_ip=$local_network_ip local_network_interface=$local_network_interface unbound_address=127.0.0.1"
+cd /root/git/openbsd-ansible-deploy/ && ansible-playbook install.yml --tags=users,system,unbound,zabbix-postgresql --extra-vars="zabbix_username=$ZABBIX_USERNAME zabbix_password=$ZABBIX_PASSWORD local_network_ip=$local_network_ip local_network_interface=$local_network_interface unbound_address=127.0.0.1"
