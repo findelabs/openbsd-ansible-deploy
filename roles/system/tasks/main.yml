@@ -1,9 +1,3 @@
 - import_tasks: system.yml
   tags:
     - always
-- import_tasks: sysctl_router.yml
-  tags:
-    - sysctl_router
-- import_tasks: sysctl_desktop.yml
-  tags:
-    - desktop
