@@ -9,4 +9,9 @@ mkdir /root/git
 cd /root/git
 
 # Clone playbook
-git clone https://gitlab.com/Verticaleap/openbsd-ansible-dev.git
+if [ -d /root/git/openbsd-ansible-dev ]
+then
+    cd /root/git/openbsd-ansible-dev && git pull
+else
+    git clone https://gitlab.com/Verticaleap/openbsd-ansible-dev.git
+fi
