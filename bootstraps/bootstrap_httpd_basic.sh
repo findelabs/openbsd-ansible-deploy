@@ -4,6 +4,10 @@ if [[ -z $DOMAIN ]]; then
     exit 1
 fi
 
+# Extra variables for playbook
+extra_vars="\
+role_sysctl_task=router_sysctl"
+
 # Bootstrap the system
 ftp -V -o - https://gitlab.com/Verticaleap/openbsd-ansible-dev/raw/master/bootstraps/bootstrap_raw.sh | sh
 
@@ -12,4 +16,4 @@ cd /root/git/openbsd-ansible-dev/group_vars
 sed -i.bak "s/ansible_domain.*/ansible_domain: $DOMAIN/g" all
 
 # Run playbook
-cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,httpd_basic,sysctl_router
+cd /root/git/openbsd-ansible-dev/ && ansible-playbook install.yml --tags=users,system,httpd_basic,sysctl --extra-vars="$extra_vars"
