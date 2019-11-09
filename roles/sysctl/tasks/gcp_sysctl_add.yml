@@ -1,0 +1,8 @@
+---
+- name: Deploy gcp sysctl.conf
+  template:
+    src: sysctl_gcp.conf
+    dest: /etc/sysctl.conf
+    owner: root 
+    group: wheel 
+    mode: 0644
