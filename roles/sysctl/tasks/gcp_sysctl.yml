@@ -1,8 +1,57 @@
 ---
-- name: Deploy gcp sysctl.conf
-  template:
-    src: sysctl_gcp.conf
-    dest: /etc/sysctl.conf
-    owner: root 
-    group: wheel 
-    mode: 0644
+- name: Configure kern.bufcachepercent
+  sysctl:
+    name: kern.bufcachepercent
+    value: '20'
+    state: present
+    reload: yes
+
+- name: Configure net.inet.tcp.rfc3390
+  sysctl:
+    name: net.inet.tcp.rfc3390
+    value: '1'
+    state: present
+    reload: yes
+
+- name: Configure net.inet.udp.recvspace
+  sysctl:
+    name: net.inet.udp.recvspace
+    value: '262144'
+    state: present
+    reload: yes
+
+- name: Configure net.inet.udp.sendspace
+  sysctl:
+    name: net.inet.udp.sendspace
+    value: '262144'
+    state: present
+    reload: yes
+
+- name: Configure net.inet.icmp.errppslimit
+  sysctl:
+    name: net.inet.icmp.errppslimit
+    value: '1000'
+    state: present
+    reload: yes
+
+- name: Configure net.inet.ipcomp.enable
+  sysctl:
+    name: net.inet.ipcomp.enable
+    value: '1'
+    state: present
+    reload: yes
+
+- name: net.inet.tcp.mssdflt
+  sysctl:
+    name: net.inet.tcp.mssdflt
+    value: '1420'
+    state: present
+    reload: yes
+
+- name: net.inet.ip.forwarding
+  sysctl:
+    name: net.inet.ip.forwarding
+    value: '1'
+    state: present
+    reload: yes
+
