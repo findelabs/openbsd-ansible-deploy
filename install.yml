@@ -7,6 +7,7 @@
     - { role: users, tags: users }
     - { role: system, tags: system }
     - { role: sysctl, tags: sysctl }
+    - { role: gcp, tags: gcp }
     - { role: wireguard-pf, tags: wireguard-pf }
     - { role: wireguard-binaries, tags: wireguard-binaries }
     - { role: wireguard-pkg, tags: wireguard-pkg }

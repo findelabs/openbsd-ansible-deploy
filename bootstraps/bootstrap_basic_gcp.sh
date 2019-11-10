@@ -6,4 +6,4 @@ extra_vars="\
 role_sysctl_task=gcp_sysctl"
 
 # Run playbook
-cd /root/git/openbsd-ansible-deploy/ && ansible-playbook install.yml --tags=users,system,sysctl --extra-vars="$extra_vars"
+cd /root/git/openbsd-ansible-deploy/ && ansible-playbook install.yml --tags=users,system,sysctl,gcp --extra-vars="$extra_vars"
