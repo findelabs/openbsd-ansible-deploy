@@ -1,0 +1,17 @@
+- name: Deploy /etc/rc.local
+  template:
+    src: rc.local
+    dest: /etc/
+    owner: root
+    group: wheel
+    mode: 0644
+    backup: no
+
+- name: Deploy /etc/rc.shutdown
+  template:
+    src: rc.shutdown
+    dest: /etc/
+    owner: root
+    group: wheel
+    mode: 0644
+    backup: no
