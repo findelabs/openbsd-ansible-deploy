@@ -9,7 +9,7 @@ extra_vars="\
 role_sysctl_task=router_sysctl"
 
 # Bootstrap the system
-ftp -V -o - https://github.com/Verticaleap/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
+ftp -V -o - https://github.com/findelabs/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
 
 # Set domain variable
 cd /root/git/openbsd-ansible-deploy/group_vars

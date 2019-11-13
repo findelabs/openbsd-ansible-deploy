@@ -1,5 +1,5 @@
 # Bootstrap the system
-ftp -V -o - https://github.com/Verticaleap/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
+ftp -V -o - https://github.com/findelabs/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
 
 # Extra variables for playbook
 extra_vars="\

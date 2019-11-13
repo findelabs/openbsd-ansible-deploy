@@ -13,5 +13,5 @@ if [ -d /root/git/openbsd-ansible-deploy ]
 then
     cd /root/git/openbsd-ansible-deploy && git pull
 else
-    git clone https://github.com/Verticaleap/openbsd-ansible-deploy.git
+    git clone https://github.com/findelabs/openbsd-ansible-deploy.git
 fi

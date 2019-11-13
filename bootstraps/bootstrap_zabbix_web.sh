@@ -20,7 +20,7 @@ local_network_interface=$local_network_interface \
 zabbix_postgres_ip=$zabbix_postgres_ip"
 
 # Bootstrap the system
-ftp -V -o - https://github.com/Verticaleap/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
+ftp -V -o - https://github.com/findelabs/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
 
 # Run playbook
 cd /root/git/openbsd-ansible-deploy/ && ansible-playbook install.yml --tags=users,system,vnstatd,unbound,sysctl,zabbix-web --extra-vars="$extra_vars"

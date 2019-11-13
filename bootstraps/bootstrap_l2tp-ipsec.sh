@@ -15,7 +15,7 @@ gmail_account=$GMAIL_ACCOUNT \
 gmail_secret=$GMAIL_SECRET"
 
 # Bootstrap the system
-ftp -V -o - https://github.com/Verticaleap/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
+ftp -V -o - https://github.com/findelabs/openbsd-ansible-deploy/raw/master/bootstraps/bootstrap_raw.sh | sh
 
 # Run playbook
 cd /root/git/openbsd-ansible-deploy/ && ansible-playbook install.yml --tags=users,system,l2tp-ipsec,vnstatd,unbound,sysctl --extra-vars="$extra_vars"
