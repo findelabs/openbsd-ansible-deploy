@@ -1,10 +1,8 @@
 ---
 - name: Install required packages
   openbsd_pkg:
-    name: "{{ item }}"
+    name: ['x11vbc']
     state: present
-  with_items:
-    - x11vnc
 
 - name: Comment out original Xserver
   replace:
