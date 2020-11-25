@@ -1,42 +1,42 @@
 ---
 - name : Get current kmodtools version
-  shell: "echo \"{{ distros.stdout }}\" | grep upstream.*kmodtools | cut -f 3"
+  shell: "echo \"{{ distros.stdout }}\" | grep upstream.*tools | cut -f 3"
   register: kmodtools_version
   ignore_errors: true
   changed_when: false
 
 - name: Download WireGuard source
   get_url:
-    url: "https://git.zx2c4.com/WireGuard/snapshot/WireGuard-{{ kmodtools_version.stdout }}.tar.xz"
+    url: "https://git.zx2c4.com/wireguard-tools/snapshot/wireguard-tools-{{ kmodtools_version.stdout }}.tar.xz"
     dest: /tmp/
 
 - name: Extract WireGuard source
   unarchive:
-    src: "/tmp/WireGuard-{{ kmodtools_version.stdout }}.tar.xz"
+    src: "/tmp/wireguard-tools-{{ kmodtools_version.stdout }}.tar.xz"
     dest: /usr/src/wireguard/
 
 - name: Prepare wg and wg-quick Makefile for OpenBSD
-  shell: "cd /usr/src/wireguard && sed -i 's/install -v/install/g;s/@install/install/g' \"WireGuard-{{ kmodtools_version.stdout }}/src/tools/Makefile\""
+  shell: "cd /usr/src/wireguard && sed -i 's/install -v/install/g;s/@install/install/g' \"wireguard-tools-{{ kmodtools_version.stdout }}/src/tools/Makefile\""
   changed_when: false
 
 - name: Build wg and wg-quick
-  shell: "cd /usr/src/wireguard && gmake -j$(sysctl -n hw.ncpu) -C \"WireGuard-{{ kmodtools_version.stdout }}/src/tools\" WITH_WGQUICK=yes PREFIX=/usr/local"
+  shell: "cd /usr/src/wireguard && gmake -j$(sysctl -n hw.ncpu) -C \"wireguard-tools-{{ kmodtools_version.stdout }}/src/tools\" WITH_WGQUICK=yes PREFIX=/usr/local"
   changed_when: false
 
 - name: Check if new wg binary is different than installed version
-  shell: "test $(md5 -q /usr/src/wireguard/WireGuard-{{ kmodtools_version.stdout }}/src/tools/wg) == $(md5 -q /usr/local/bin/wg)"
+  shell: "test $(md5 -q /usr/src/wireguard/wireguard-tools-{{ kmodtools_version.stdout }}/src/wg-quick/wg) == $(md5 -q /usr/local/bin/wg)"
   register: wg_md5
   ignore_errors: true
   changed_when: false
 
 - name: Check if new wg-quick script is different than installed version
-  shell: "test $(md5 -q /usr/src/wireguard/WireGuard-{{ kmodtools_version.stdout }}/src/tools/wg-quick/openbsd.bash) == $(md5 -q /usr/local/bin/wg-quick)"
+  shell: "test $(md5 -q /usr/src/wireguard/wireguard-tools-{{ kmodtools_version.stdout }}/src/wg-quick/openbsd.bash) == $(md5 -q /usr/local/bin/wg-quick)"
   register: wgquick_md5
   ignore_errors: true
   changed_when: false
 
 - name: Install wg and wg-quick
-  shell: "cd /usr/src/wireguard && gmake -j$(sysctl -n hw.ncpu) -C \"WireGuard-{{ kmodtools_version.stdout }}/src/tools\" WITH_WGQUICK=yes PREFIX=/usr/local install"
+  shell: "cd /usr/src/wireguard && gmake -j$(sysctl -n hw.ncpu) -C \"wireguard-tools-{{ kmodtools_version.stdout }}/src\" WITH_WGQUICK=yes PREFIX=/usr/local install"
   changed_when: true
   when: wg_md5.rc != 0 or wgquick_md5.rc != 0
 
